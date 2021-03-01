@@ -1,4 +1,7 @@
 ﻿//
+// комм после изм им. стр-т ininame на inidat
+
+
 #define _CRT_SECURE_NO_WARNINGS  //   ?? подробнее об предупреждениях ??
 #define TOKENDEBUG nodebug
 //#define ALPHABET ok
@@ -198,94 +201,94 @@ struct word *extensmem(struct word *pmemword, long *pamountmem, long newamountwo
  */
 
  /////////////////// ======== запись в файл(заранее переименов) базу  структур   ==========///////////  
-char* writebase2(FILE *phddfile, char* pfilename, struct word *pmemword, int countnumword)//
+char* writebase2(FILE *phddfile, char* pinidat, struct word *pmemword, int countnumword)//
 																						  //phddfile указ на hdd файл в котором сохранять базу слов    ??("argv[1]_nosort.dat")?
-																						  //pfilename -  уже сформированное ранее имя ф-ла для hdd
+																						  //pinidat -  уже сформированное ранее имя ф-ла для hdd
 																						  // pmemword - указ на дин массив несорт структур, 
 																						  //countnumword - число стр динмассива
 																						  //, возврат указ имя файла с  структурами ( ----- )
 																						  //ф-я сама открывает r+и и потом закрывает файл на hdd 
 {
-	printf("   ~~~ Запись в файл %s несортированного массива структур по адресу: ~~~  \n", pfilename);
+	printf("   ~~~ Запись в файл %s несортированного массива структур по адресу: ~~~  \n", pinidat);
 	//puts(argv[0]);  // записывает в стандартный поток вывода stdout строку     //temp
 	//printf("~~ argv[0] является собственное имя исп ф-ла: ( %s )~~\n", argv[0]);  // temp
 
-	// ~~~~~~~~~~ открытие указателя на hdd файл базы слов с именем pfilename  ~~~~~~~
+	// ~~~~~~~~~~ открытие указателя на hdd файл базы слов с именем pinidat  ~~~~~~~
 	errno_t err = 1;   // зачем 1 -  ?????????????????????????????????? отлака наверно
 					   //FILE *hddfile = phddfile;					// указ на файл в котором сохранять базу слов-("argv[1]_nosort.dat")?
 	if (flagtext)		//если нов текст то открывается новый файл базы на запись
 	{
-		err = fopen_s(&phddfile, pfilename, "w+b");
+		err = fopen_s(&phddfile, pinidat, "w+b");
 		if (err) {
-			perror(pfilename);
-			printf("   ~~~ Не открылся нов файл w+b %s  массива структур  ~~~  \n", pfilename);
+			perror(pinidat);
+			printf("   ~~~ Не открылся нов файл w+b %s  массива структур  ~~~  \n", pinidat);
 			system("pause"); exit(1);
 		}
-		else printf("   ~~~ Записан новв файл %s  массива структур  ~~~  \n", pfilename);
+		else printf("   ~~~ Записан новв файл %s  массива структур  ~~~  \n", pinidat);
 	}
 	else
 	{
-		err = fopen_s(&phddfile, pfilename, "r+b");	// открыть бинарн файл для чт и дозаписи 
+		err = fopen_s(&phddfile, pinidat, "r+b");	// открыть бинарн файл для чт и дозаписи 
 		if (err) {
-			perror(pfilename);
-			printf("   ~~~ Не открылся старый файл r+b %s  массива структур  ~~~  \n", pfilename);
+			perror(pinidat);
+			printf("   ~~~ Не открылся старый файл r+b %s  массива структур  ~~~  \n", pinidat);
 			system("pause"); exit(1);
 		}
-		else printf("   ~~~ Открыт старый файл %s  массива структур  ~~~  \n", pfilename);
+		else printf("   ~~~ Открыт старый файл %s  массива структур  ~~~  \n", pinidat);
 	};
 
-	//err = fopen_s(&phddfile, pfilename, "r+b");	// открыть бинарн файл для чт и дозаписи 
-	//if (err) { perror(pfilename); system("pause"); exit(1); };	//в котор сохр-ть базу слов-"argv[1]nosort.dat"
+	//err = fopen_s(&phddfile, pinidat, "r+b");	// открыть бинарн файл для чт и дозаписи 
+	//if (err) { perror(pinidat); system("pause"); exit(1); };	//в котор сохр-ть базу слов-"argv[1]nosort.dat"
 	//if (err)				// ?? надо от флага NEWTEXT  ????????????????????????????????????????????????????????????
 	//{
 	//	
 
-	//	err = fopen_s(&phddfile, pfilename, "w+b");
-	//	if (err) { perror(pfilename); 
+	//	err = fopen_s(&phddfile, pinidat, "w+b");
+	//	if (err) { perror(pinidat); 
 	//	system("pause"); exit(1); } 
 	//	else { 
-	//		printf("   ~~~ Записан новв файл %s  массива структур по адресу: ~~~  \n", pfilename);
+	//		printf("   ~~~ Записан новв файл %s  массива структур по адресу: ~~~  \n", pinidat);
 	//	};
 	// };	//в котор сохр-ть базу слов-"argv[1]nosort.dat"
 
-	fwrite(pmemword, sizeof(struct word), countnumword, phddfile);  // запись в файл hddfile = "*pfilename"
+	fwrite(pmemword, sizeof(struct word), countnumword, phddfile);  // запись в файл hddfile = "*pinidat"
 
 																	//fclose(ptxtfile);	// из которого читается список слов
 																	//fclose(pmyfile);		// файл в котором сохранять базу слов
 	fclose(phddfile);		// закр файл в котором сохранять базу слов
-	printf("~~ Записан файл базы слов с пом-ю writebase2(): ( %s ) ~~\n", pfilename);  // temp
+	printf("~~ Записан файл базы слов с пом-ю writebase2(): ( %s ) ~~\n", pinidat);  // temp
 																					   //...............................................................
 																					   //free(pnamewordnosort);	//осв-ие памяти с ИМЕНЕМ файла *_common.dat отсепарир-ных неотсортиров-х структ
-	return(pfilename);
+	return(pinidat);
 }//    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%   END writebase2()   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
  /*
  /////////////////// ======== запись в файл(заранее переименов) базу  структур   ==========///////////
- char* writebase2old(char* pfilename, struct word *pmemword, int countnumword)//
- //pfilename -  уже сформированное ранее имя ф-ла для hdd
+ char* writebase2old(char* pinidat, struct word *pmemword, int countnumword)//
+ //pinidat -  уже сформированное ранее имя ф-ла для hdd
  // pmemword - указ на дин массив несорт структур, countnumword - число стр динмассива
  //, возврат указ имя файла с  структурами ( ----- )
  //ф-я сама открывает r+и и потом закрывает файл на hdd
  {
- printf("   ~~~ Запись в файл %s несортированного массива структур по адресу: ~~~  \n", pfilename);
+ printf("   ~~~ Запись в файл %s несортированного массива структур по адресу: ~~~  \n", pinidat);
  //puts(argv[0]);  // записывает в стандартный поток вывода stdout строку     //temp
  //printf("~~ argv[0] является собственное имя исп ф-ла: ( %s )~~\n", argv[0]);  // temp
 
  // ~~~~~~~~~~ открытие указателя на ранее созданный на hdd файл базы слов с именем   ~~~~~~~
  errno_t err = 1;   // зачем 1 -  ?????????????????????????????????? отлака наверно
  FILE *hddfile;					// указ на файл в котором сохранять базу слов-("argv[1]_nosort.dat")?
- err = fopen_s(&hddfile, pfilename, "w+b");	// открыть бинарн файл для чт и дозаписи
- if (err) { perror(pfilename); system("pause"); exit(1); };	//в котор сохр-ть базу слов-"argv[1]nosort.dat"
+ err = fopen_s(&hddfile, pinidat, "w+b");	// открыть бинарн файл для чт и дозаписи
+ if (err) { perror(pinidat); system("pause"); exit(1); };	//в котор сохр-ть базу слов-"argv[1]nosort.dat"
 
- fwrite(pmemword, sizeof(struct word), countnumword, hddfile);  // запись в файл hddfile = "*pfilename"
+ fwrite(pmemword, sizeof(struct word), countnumword, hddfile);  // запись в файл hddfile = "*pinidat"
 
  //fclose(ptxtfile);	// из которого читается список слов
  //fclose(pmyfile);		// файл в котором сохранять базу слов
  fclose(hddfile);		// закр файл в котором сохранять базу слов
- printf("~~ Записан файл базы слов с пом-ю writebase2(): ( %s ) ~~\n", pfilename);  // temp
+ printf("~~ Записан файл базы слов с пом-ю writebase2(): ( %s ) ~~\n", pinidat);  // temp
  //...............................................................
  //free(pnamewordnosort);	//осв-ие памяти с ИМЕНЕМ файла *_common.dat отсепарир-ных неотсортиров-х структ
- return(pfilename);
+ return(pinidat);
  }//    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%   END writebase2old()   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 

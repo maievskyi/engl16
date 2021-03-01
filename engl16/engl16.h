@@ -12,7 +12,7 @@
 #define QUANTITYCHARNAME 256 //?? кол-во байт в одной записи в масс имён ф-в прогр ??
 #define QUANTITYNAME 8 // кол-во записей элементов стр-тур в массиве имён ф-в программы
 // #define d ((&struct word a.c)-(&struct word a)) 
-
+// comm после изм имени стр-т ininame на inidat
 
 #define TEXT 
 //#define SEPARATED  // sepmini()
@@ -97,7 +97,7 @@ struct word       // стр для хранения слов с переводо
 	char tempchar; // отладка временно для выравн при просм  F3
 	int tempint;
 };
-struct filename       // стр для хранения имён файлов и другой инфы
+struct inidat       // стр для хранения имён файлов и другой инфы
 {				//будут и другие поля;
 	int idname;
 	char name[EN1];    //имя файла

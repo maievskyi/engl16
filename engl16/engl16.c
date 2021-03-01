@@ -1,8 +1,8 @@
 ﻿// engl16 дополнение 15.02.2021 - и идёт передача в GIT
 //первый коммит пока нет .sln
 //первый коммит есть .sln
-//коммит перед изм имени структ filename
-
+//коммит перед изм имени структ inidat
+// комм после изм имени стр-т ininame на inidat
 
 //24/09/20 после RRRengl09 развиваем работу с ininame.dat
 // 31/07/20 дробление на мелкие ф-ции sepmini()
@@ -26,17 +26,17 @@ FILE *pdat1file;	//---> указатель на структ. файл в кот
 FILE *pnosortfile;	//---> указатель на структ. ф в котор сохр несорт базу слов - argv[1]_nosort.dat"
 FILE *psortfile;	//---> указатель на структ. ф в котором сохр сорт базу слов - argv[1]_sort.dat"
 
-char *pnamenosort;		//указат на имя ф-ла с запис несорт масс стр 
-struct word *pmemword;		//глоб указат -> в main()на первичное выделеие ДИН памяти 
+char *pnamenosort;		//-->указат на имя ф-ла с запис несорт масс стр 
+struct word *pmemword;		//-->глоб указат в main()на первичное выделеие ДИН памяти 
 							//под МАССИВ СТРУКТУР (word) для отсепарирования token()
 							//далее память будет перерасширятся по этому указателю
-struct word *pmemsortword;  // указ на д пам стрктур с отсортированными словами
-struct word *palphabetword;  // указ на д пам стр-р с отсорт-ми и сокращенными словами
-long amountmem = 0;		//--- РАЗМЕР в байтах дин пам выде-мых под структуры word
+struct word *pmemsortword;  //--> указ на д пам стрктур с отсортированными словами
+struct word *palphabetword;  //--> указ на д пам стр-р с отсорт-ми и сокращенными словами
+long amountmem = 0;		//---> РАЗМЕР в байтах дин пам выде-мых под структуры word
 long *pamountmem;		//--->укз РАЗМ в б-тах ДИН пам выде-мых под несорт структ word
 int countnumword = 0;	//---счётчик инкремента слов а значит и стр-р при сепар-и
 int *pcountnumword;		//--->указатель на счетч слов
-struct filename *pdat1name;			//--->указ на ДИН пам с базой имён программы
+struct inidat *pdat1name;	//--->указ на ДИН пам с ini базой имён прог-мы
 int flagtext = NEWTEXT;	//переменная -ФЛАГ режима работы со стар или нов текстом
 						//т е будет ли сепарироваться по новой и писаться в нофую базу слов 
 
@@ -92,8 +92,8 @@ int main(int argc, const char ** argv, const char** env)
 
 			// работаем с уже открытым ранее созданным ф-лом
 			// создание дин памяти с базой имён программы ???? переделать QUANTITYCHARNAME=========
-			//pdat1name = (char*)malloc(QUANTITYNAME * sizeof(struct filename));
-			pdat1name = (struct filename*)malloc(QUANTITYNAME * QUANTITYCHARNAME);
+			//pdat1name = (char*)malloc(QUANTITYNAME * sizeof(struct inidat));
+			pdat1name = (struct inidat*)malloc(QUANTITYNAME * QUANTITYCHARNAME);
 			if (pdat1name == NULL)printf("Не выделена память под базу имён программы \n");
 			else printf("  Выделена дин пам din1name = %d Bytes \n\
  под %d записей базы имён программы \n",
@@ -161,13 +161,13 @@ int main(int argc, const char ** argv, const char** env)
 				}
 
 				// создание по укз pdat1name дин пам с базой имён программы  ===================
-				pdat1name = (struct filename*)malloc(QUANTITYNAME * sizeof(struct filename));
+				pdat1name = (struct inidat*)malloc(QUANTITYNAME * sizeof(struct inidat));
 				if (pdat1name == NULL)printf("Не выделена память под базу имён программы \n");
 				else printf("  Выделена дин пам din1name = %d Bytes \n под %d записей базы имён программы \n",
-					QUANTITYNAME * sizeof(struct filename), QUANTITYNAME);
+					QUANTITYNAME * sizeof(struct inidat), QUANTITYNAME);
 
 				//запись в ф ininame.dat содержимое дин память pdat1name, (?надоли обн  = 0) ============
-				size_t result = fwrite(pdat1name, sizeof(struct filename), QUANTITYNAME, pdat1file);
+				size_t result = fwrite(pdat1name, sizeof(struct inidat), QUANTITYNAME, pdat1file);
 				puts("\n Создан Новый файл пользователя \"ininame.dat\"\n\
  с новыми обнулёнными именами баз текстов \n");
 				fclose(pdat1file);	// закрыть файловый поток из которого читаются имена файлов
@@ -282,7 +282,7 @@ int main(int argc, const char ** argv, const char** env)
 					system("pause");
 					exit(1);
 				}
-				fwrite(pdat1name, sizeof(struct filename), QUANTITYNAME, pdat1file);//ininame.dat
+				fwrite(pdat1name, sizeof(struct inidat), QUANTITYNAME, pdat1file);//ininame.dat
 
 																					//~~~~~~~~~~   преобразование имени для сортировнного массива  _sort.dat
 				char *pnamesortword;  // указат на дин строка-имя читаемого файла "argv[1]_sort.dat"
@@ -339,7 +339,7 @@ int main(int argc, const char ** argv, const char** env)
 
 				//~~~~~~~~~~   вывод с второй записью в hdd файл имён ininame.dat   имени  XXX_sort.dat	---////////
 				fseek(pdat1file, 0, SEEK_SET);
-				fwrite(pdat1name, sizeof(struct filename), QUANTITYNAME, pdat1file);//ininame.dat
+				fwrite(pdat1name, sizeof(struct inidat), QUANTITYNAME, pdat1file);//ininame.dat
 
 																					//	//~~~  temp????  ~~~~ открытие нового hdd файла для отсортированного масс структ слов
 																					//			puts("\n будет создан новый файл пользователя \n с отсортированными словами \n");
