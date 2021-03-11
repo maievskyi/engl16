@@ -3,12 +3,12 @@
 //первый коммит есть .sln
 //коммит перед изм имени структ inidat
 // комм после изм имени стр-т ininame на inidat
-// ком после изм им указ на стр-ру pdat1name на pinidatmem
+// ком после изм им указ на стр-ру pdat1name на pmeminidat
 
 //24/09/20 после RRRengl09 развиваем работу с ininame.dat
 // 31/07/20 дробление на мелкие ф-ции sepmini()
 // extensmem()
-// Начало работать
+// Начало работать  
 // Надо добавлять первую сортировку ( по алфавиту)
 //
 #define _CRT_SECURE_NO_WARNINGS  //   ?? подробнее об предупреждениях ??
@@ -21,7 +21,7 @@
 #include"engl16.h"  //
 
 
-FILE *ptxtfile; //---> текст который читать - argv[1] первый аргумент ком строки "txt2.txt"
+FILE *pfiletxt; //---> текст который читать - argv[1] первый аргумент ком строки "txt2.txt"
 FILE *pmyfile;	//---> указатель на структ. файл в котором сохранять базу слов - argv[2].dat"
 FILE *pdat1file;	//---> указатель на структ. файл в котором сохранять файлов ininame.dat
 FILE *pnosortfile;	//---> указатель на структ. ф в котор сохр несорт базу слов - argv[1]_nosort.dat"
@@ -37,7 +37,7 @@ long amountmem = 0;		//---> РАЗМЕР в байтах дин пам выде-
 long *pamountmem;		//--->укз РАЗМ в б-тах ДИН пам выде-мых под несорт структ word
 int countnumword = 0;	//---счётчик инкремента слов а значит и стр-р при сепар-и
 int *pcountnumword;		//--->указатель на счетч слов
-struct inidat *pinidatmem;	//--->указ на ДИН пам с стр-й базы ini имён прог-мы
+struct inidat *pmeminidat;	//--->указ на ДИН пам с стр-й базы ini имён прог-мы
 int flagtext = NEWTEXT;	//переменная -ФЛАГ режима работы со стар или нов текстом
 						//т е будет ли сепарироваться по новой и писаться в нофую базу слов 
 
@@ -69,13 +69,13 @@ int main(int argc, const char ** argv, const char** env)
 			{
 			puts("\n Ошибка! \n Неудачная попытка создания Нового файла пользователя \n\
 			с новыми именами баз \n");
-			free(pinidatmem);		//освобождение памяти под базу имён программы
+			free(pmeminidat);		//освобождение памяти под базу имён программы
 			system("pause");
 			exit(1);
 			}
 
-			//записываем в него содержимое дин память pinidatmem, (предполож = 0)
-			size_t result = fwrite(pinidatmem, QUANTITYCHARNAME, QUANTITYNAME, pdat1file);
+			//записываем в него содержимое дин память pmeminidat, (предполож = 0)
+			size_t result = fwrite(pmeminidat, QUANTITYCHARNAME, QUANTITYNAME, pdat1file);
 
 			puts("\n Создан Новый файл пользователя \"ininame.dat\"\n\
 			с новыми именами баз текстов \n");
@@ -93,17 +93,17 @@ int main(int argc, const char ** argv, const char** env)
 
 			// работаем с уже открытым ранее созданным ф-лом
 			// создание дин памяти с базой имён программы ???? переделать QUANTITYCHARNAME=========
-			//pinidatmem = (char*)malloc(QUANTITYNAME * sizeof(struct inidat));
-			pinidatmem = (struct inidat*)malloc(QUANTITYNAME * QUANTITYCHARNAME);
-			if (pinidatmem == NULL)printf("Не выделена память под базу имён программы \n");
+			//pmeminidat = (char*)malloc(QUANTITYNAME * sizeof(struct inidat));
+			pmeminidat = (struct inidat*)malloc(QUANTITYNAME * QUANTITYCHARNAME);
+			if (pmeminidat == NULL)printf("Не выделена память под базу имён программы \n");
 			else printf("  Выделена дин пам din1name = %d Bytes \n\
  под %d записей базы имён программы \n",
 				QUANTITYNAME * QUANTITYCHARNAME, QUANTITYNAME);			//  ??  отладка
 
-																		//считываем в дин память ->pinidatmem содержимое файлового потока pdat1file->
-			size_t result = fwrite(pinidatmem, QUANTITYCHARNAME, QUANTITYNAME, pdat1file);
+																		//считываем в дин память ->pmeminidat содержимое файлового потока pdat1file->
+			size_t result = fwrite(pmeminidat, QUANTITYCHARNAME, QUANTITYNAME, pdat1file);
 
-			puts("\n Считан \"ininame.dat\" с новыми именами баз текстов в ->pinidatmem \n");
+			puts("\n Считан \"ininame.dat\" с новыми именами баз текстов в ->pmeminidat \n");
 			system("pause");		// отладка
 
 									// etc......................................................................
@@ -129,16 +129,16 @@ int main(int argc, const char ** argv, const char** env)
 		если согласны нажмите \"Y\", если нет -\"N\" \n");
 
 		//выбор нового текста для сепарирования ==================================
-		//int tempchar = getchar();
+		//int tempchar = getchar(); //выходной рабочий вариант
 		//если выбран нов текст для сепар =========================
 		//if (('Y' == tempchar)||('y' == tempchar)) // выбран нов текст для сепар ====
-		if (1) // выбран нов текст для сепар ====   TEMP DEBUG
+		if (1) // выбран нов текст для сепар ====  вар TEMP DEBUG
 		{
 			//проверка существования именно двух аргументов ком строки
 			if (argc == 2) // проверка существования именно двух аргументов ком строки
 			{
 				flagtext = NEWTEXT;		// флаг - согласие что есть файл с новым текстом ?
-			}							// флаг зачем??
+			}							// флаг зачем?? = в ф writebase2
 			else
 			{
 				puts("Нет второго арг ком строки \n повторите ввод! \n");
@@ -147,7 +147,8 @@ int main(int argc, const char ** argv, const char** env)
 			}
 			// end ifelse проверка существования именно двух аргументов ком строки
 
-			//создание и заполнение ??????? "0" Нов файла ИМЁН пользователя 
+			//создание и заполнение ???? "0" Нов файла настроек "ininame.dat" пользователя 
+			// тут надо писать
 
 			//созд указ pdat1file на нов файл имён польз-ля "ininame.dat" с нов именами баз текстов
 			{  // простой блок
@@ -161,14 +162,15 @@ int main(int argc, const char ** argv, const char** env)
 					exit(1);
 				}
 
-				// создание по укз pinidatmem дин пам с базой имён программы  ===================
-				pinidatmem = (struct inidat*)malloc(QUANTITYNAME * sizeof(struct inidat));
-				if (pinidatmem == NULL)printf("Не выделена память под базу имён программы \n");
+				// созд-е по укз pmeminidat дн пам с ini базой пользователя программы  ================
+				pmeminidat = (struct inidat*)malloc(QUANTITYNAME * sizeof(struct inidat));
+				if (pmeminidat == NULL)printf("Не выделена память под базу имён программы \n");
 				else printf("  Выделена дин пам din1name = %d Bytes \n под %d записей базы имён программы \n",
 					QUANTITYNAME * sizeof(struct inidat), QUANTITYNAME);
 
-				//запись в ф ininame.dat содержимое дин память pinidatmem, (?надоли обн  = 0) ============
-				size_t result = fwrite(pinidatmem, sizeof(struct inidat), QUANTITYNAME, pdat1file);
+				//________________ просто темп строка
+				//запись в ф ininame.dat содержимое дин память pmeminidat, (?надоли обн  = 0) ============
+				size_t result = fwrite(pmeminidat, sizeof(struct inidat), QUANTITYNAME, pdat1file);
 				puts("\n Создан Новый файл пользователя \"ininame.dat\"\n\
  с новыми обнулёнными именами баз текстов \n");
 				fclose(pdat1file);	// закрыть файловый поток из которого читаются имена файлов
@@ -178,8 +180,8 @@ int main(int argc, const char ** argv, const char** env)
 
 			 // здесь все операции по сепарированию нового текста простой блок ===================
 			{
-				// открытие входного txt файла ==============================================
-				err = fopen_s(&ptxtfile, argv[1], "rb");// инициализируется указатель FILE *ptxtfile 
+			// открытие входного txt файла ==============================================
+				err = fopen_s(&pfiletxt, argv[1], "rb");// инициализируется указатель FILE *pfiletxt 
 														//на вх-ой txt ф-л (argv[1])
 														//  и открывается в режиме (rb)-  "txt2.txt" 
 				if (err) {
@@ -187,42 +189,42 @@ int main(int argc, const char ** argv, const char** env)
 					perror(argv[1]); exit(1);
 				};  // puts("нет требуемого ком строкой ф-ла \n"); 
 
-					//~~~~~~  перенос ф-ла текста в оперативную динам память, для цього  ---> ================
+			// перенос ф-ла текста в оперативную динам память, для цього ---> ================
 
 					//~~~~~~~  определяем РАЗМЕР файла в байтах  ------------------------------------------
 				long txtSize = 0;		//--- размер в байтах файла котор будет считан в дин память
 										// устанавливаем текущ позицию в конец файла, т е (смещ на 0 относ конца ф-ла)	 
-				fseek(ptxtfile, 0, SEEK_END);
-				txtSize = ftell(ptxtfile);                       // ПОЛУЧАЕМ РАЗМЕР В БАЙТАХ 
+				fseek(pfiletxt, 0, SEEK_END);
+				txtSize = ftell(pfiletxt);                       // ПОЛУЧАЕМ РАЗМЕР В БАЙТАХ 
 																 // и записываем в txtSize
-																 //rewind(ptxtfile);  //+ очистка буфера      														
-				fseek(ptxtfile, 0, SEEK_SET);	// перевести текущую поз на начало файла
+																 //rewind(pfiletxt);  //+ очистка буфера      														
+				fseek(pfiletxt, 0, SEEK_SET);	// перевести текущую поз на начало файла
 												//
 				printf("Размер памяти входного текста = %d Bytes \n", txtSize);
 
-				//~~~~~~  выделение дин памяти буфеp *ptxtbuf---------------------------------
-				char * ptxtbuf;			//--->  локальн указатель на дин пам. ptxtbuf 
+				//~~~~~~  выделение дин памяти буфеp *pmemtxtbuf---------------------------------
+				char * pmemtxtbuf;			//--->  локальн указатель на дин пам. pmemtxtbuf 
 										//		для хранения содерж-го из вх-го файла...........
-				ptxtbuf = (char*)malloc(sizeof(char) * txtSize); // выделить дин память ptxtbuf для хран-я содерж-го из ф-л а
+				pmemtxtbuf = (char*)malloc(sizeof(char) * txtSize); // выделить дин память pmemtxtbuf для хран-я содерж-го из ф-л а
 																 // далее подлежащего разбиению токенами
-				if (ptxtbuf == NULL)
+				if (pmemtxtbuf == NULL)
 				{
 					fputs("Ошибка памяти", stderr);
 					exit(2);
 				}
-				printf("~~ выделена дин пам. ptxtbuf для хранения текста из файла ~~\n");
-				// ------из ptxtfile считываем файл в буфер	ptxtbuf!!!------------------------------------
-				size_t result = fread(ptxtbuf, sizeof(char), txtSize, ptxtfile);  // считываем файл в буфер!!!
+				printf("~~ выделена дин пам. pmemtxtbuf для хранения текста из файла ~~\n");
+				// ------из pfiletxt считываем файл в буфер	pmemtxtbuf!!!------------------------------------
+				size_t result = fread(pmemtxtbuf, sizeof(char), txtSize, pfiletxt);  // считываем файл в буфер!!!
 				if (result != txtSize)  //если не совпало число считанных байт
 				{
-					if (feof(ptxtfile)) printf("Преждевременное достижение конца файла.\n");
+					if (feof(pfiletxt)) printf("Преждевременное достижение конца файла.\n");
 					else printf("Ошибка при чтении файла.\n");
 					exit(3);
 				}
-				fclose(ptxtfile);	//поработал и закрыл )) файловый ввод из которого читается входной текст
+				fclose(pfiletxt);	//поработал и закрыл )) файловый ввод из которого читается входной текст
 
 #ifdef TEXT	//~~~~~~  текст выв-ся в станд. поток вывода консоли НА ЭКРАН (для  отладки)===================
-				if (puts(ptxtbuf) == EOF) {
+				if (puts(pmemtxtbuf) == EOF) {
 					printf("Ошибка при записи из текстов файла \n");
 				}  // -> -> -> 
 				else {
@@ -248,10 +250,10 @@ int main(int argc, const char ** argv, const char** env)
 				pamountmem = &amountmem;  // указ на РАЗМ дин пам БАЙТ для сепарир стр-р(пока= 8 стр)
 				pcountnumword = &countnumword; //указ на счётч инкр-та СЛОВ = СТРУКТ при сепар-и 
 											   // pmemword - указ на МАССИВ СТРУКТУР (word) для отсепарирования token()
-											   //ptxtbuf - указ на дин массив неразбитого текста - копии входн файла
+											   //pmemtxtbuf - указ на дин массив неразбитого текста - копии входн файла
 											   //argv[1] - из ком строки имя для отладки printf
-											   // вызов сепарирования  long amountword = *pcountnumword / sizeof(struct word); 
-				pmemword = sepmini(pmemword, pamountmem, ptxtbuf, pcountnumword, argv[1]);
+											   // ВЫЗОВ СЕПАРИРОВАНИЯ  long amountword = *pcountnumword / sizeof(struct word); 
+				pmemword = sepmini(pmemword, pamountmem, pmemtxtbuf, pcountnumword, argv[1]);
 
 
 				//~~~~~~~~~~~~   далее запись в файл базу сепарированных но несортированных структур =================				
@@ -270,9 +272,9 @@ int main(int argc, const char ** argv, const char** env)
 				puts(pnamewordnosort);		//debug
 
 
-											//~~~~~~~~~~  запись в  дин пам pinidatmem имени файла несорт-ных структ word    ~~~~~~~~~
-				pinidatmem->idname = 0;
-				strncpy(pinidatmem->name, pnamewordnosort, EN1);
+											//~~~~~~~~~~  запись в  дин пам pmeminidat имени файла несорт-ных структ word    ~~~~~~~~~
+				pmeminidat->idname = 0;
+				strncpy(pmeminidat->name, pnamewordnosort, EN1);
 
 
 				//~~~~~~~~~~   запись дин памяти с 1-м именем  XXX_nosrt.dat в файл имён "ininame.dat"   	
@@ -283,7 +285,7 @@ int main(int argc, const char ** argv, const char** env)
 					system("pause");
 					exit(1);
 				}
-				fwrite(pinidatmem, sizeof(struct inidat), QUANTITYNAME, pdat1file);//ininame.dat
+				fwrite(pmeminidat, sizeof(struct inidat), QUANTITYNAME, pdat1file);//ininame.dat
 
 																					//~~~~~~~~~~   преобразование имени для сортировнного массива  _sort.dat
 				char *pnamesortword;  // указат на дин строка-имя читаемого файла "argv[1]_sort.dat"
@@ -334,13 +336,13 @@ int main(int argc, const char ** argv, const char** env)
 					printf(" _ %3d.  id=%3d  repeat_id=%3d _( %s )___[ %d ]   \n", m, pmemsortword[m].id, pmemsortword[m].repeat_id, pmemsortword[m].en, pmemsortword[m].repeat);    // temp
 				}
 
-				//~~~~~~~~~~  запись в дин пам pinidatmem имени файла отсорт-ных структ word    ~~~~~~~~~
-				(pinidatmem + 1)->idname = 1;
-				strncpy((pinidatmem + 1)->name, pnamesortword, EN1);
+				//~~~~~~~~~~  запись в дин пам pmeminidat имени файла отсорт-ных структ word    ~~~~~~~~~
+				(pmeminidat + 1)->idname = 1;
+				strncpy((pmeminidat + 1)->name, pnamesortword, EN1);
 
 				//~~~~~~~~~~   вывод с второй записью в hdd файл имён ininame.dat   имени  XXX_sort.dat	---////////
 				fseek(pdat1file, 0, SEEK_SET);
-				fwrite(pinidatmem, sizeof(struct inidat), QUANTITYNAME, pdat1file);//ininame.dat
+				fwrite(pmeminidat, sizeof(struct inidat), QUANTITYNAME, pdat1file);//ininame.dat
 
 																					//	//~~~  temp????  ~~~~ открытие нового hdd файла для отсортированного масс структ слов
 																					//			puts("\n будет создан новый файл пользователя \n с отсортированными словами \n");
@@ -458,7 +460,7 @@ int main(int argc, const char ** argv, const char** env)
 
 		//free(pnamewordnosort);//
 		//free(pmemword);		//освобождение памяти массива отсепарированных неотсортированных структур
-		//free(pinidatmem);		//освобождение памяти под базу имён программы
+		//free(pmeminidat);		//освобождение памяти под базу имён программы
 
 	printf("\n\n             The END!   -     конец урока! \n\n\n");
 	system("pause");

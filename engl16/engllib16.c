@@ -14,14 +14,14 @@
 extern flagtext;
 
 //////////-------  новая ф-ция  ------///////////////////////////////////////////////////////////////
-// сепарирует строчный дин массив ptxtbuf[] (уже скопированный из ф-ла) в  массив структур word
+// сепарирует строчный дин массив pmemtxtbuf[] (уже скопированный из ф-ла) в  массив структур word
 // при работе с (большим текстом) из себя выз ф-ю extensmem()
-struct word * sepmini(struct word *pmemword, long *pamountmem, char * ptxtbuf, int * pcountnumword, char const * argv)
+struct word * sepmini(struct word *pmemword, long *pamountmem, char * pmemtxtbuf, int * pcountnumword, char const * argv)
 	//возвр указатель на д память с отсепар словами - str word *pmemword
 	// заранее созданный и переданный в ф-ю,
 	// pamountmem указ на РАЗМЕР д пам str word в б-тах
 	//multipl коэфф умнож при нехват дин памяти при token() 
-	//ptxtbuf указ. на дин массив неразбитого текста - копии входн файла
+	//pmemtxtbuf указ. на дин массив неразбитого текста - копии входн файла
 	//pcount - указатель числа подсчитанных слов при сепарир
 	// нужен для точного размера массива (несортированного) структур с англ словами
 	// arv1 имя передаваемого через ком строку входного файла - нужен только для fprint()????
@@ -48,7 +48,7 @@ struct word * sepmini(struct word *pmemword, long *pamountmem, char * ptxtbuf, i
 								//отделённого  char текста с \0 в конце
 	char *next_token1 = NULL;	//--->буфер ?? думаю для хранения разбиваемой строки
 								//22														//															Establish string and get the first token:
-	token1 = strtok_s(ptxtbuf, seps, &next_token1);	//первый вызов ф сепарирования
+	token1 = strtok_s(pmemtxtbuf, seps, &next_token1);	//первый вызов ф сепарирования
 	char tokenbuf[EN];			//---> лок буферный массив для переноса из token1 english
 								//в нижний регистр = 32 ?что будет при превышении???
 								// !каждая строка после strtok_s() будет заканчиваться \0
@@ -190,7 +190,7 @@ struct word *extensmem(struct word *pmemword, long *pamountmem, long newamountwo
 
  fwrite(pmemword, sizeof(struct word), countnumword, nosortfile);  // запись в файл nosortfile = "argv[1]_nosort.dat"
 
- //fclose(ptxtfile);	// из которого читается список слов
+ //fclose(pfiletxt);	// из которого читается список слов
  //fclose(pmyfile);		// файл в котором сохранять базу слов
  fclose(nosortfile);		// файл в котором сохранять базу слов
  printf("~~ Записан файл отсепарированных несортированных слв: ( %s ) ~~\n", pnamewordnosort);  // temp
@@ -202,12 +202,12 @@ struct word *extensmem(struct word *pmemword, long *pamountmem, long newamountwo
 
  /////////////////// ======== запись в файл(заранее переименов) базу  структур   ==========///////////  
 char* writebase2(FILE *phddfile, char* pinidat, struct word *pmemword, int countnumword)//
-																						  //phddfile указ на hdd файл в котором сохранять базу слов    ??("argv[1]_nosort.dat")?
-																						  //pinidat -  уже сформированное ранее имя ф-ла для hdd
-																						  // pmemword - указ на дин массив несорт структур, 
-																						  //countnumword - число стр динмассива
-																						  //, возврат указ имя файла с  структурами ( ----- )
-																						  //ф-я сама открывает r+и и потом закрывает файл на hdd 
+					//phddfile указ на hdd файл в котором сохранять базу слов    ??("argv[1]_nosort.dat")?
+					//pinidat -  уже сформированное ранее имя ф-ла для hdd
+					// pmemword - указ на дин массив несорт структур, 
+					//countnumword - число стр динмассива
+					//, возврат указ имя файла с  структурами ( ----- )
+					//ф-я сама открывает r+и и потом закрывает файл на hdd 
 {
 	printf("   ~~~ Запись в файл %s несортированного массива структур по адресу: ~~~  \n", pinidat);
 	//puts(argv[0]);  // записывает в стандартный поток вывода stdout строку     //temp
@@ -223,7 +223,7 @@ char* writebase2(FILE *phddfile, char* pinidat, struct word *pmemword, int count
 			perror(pinidat);
 			printf("   ~~~ Не открылся нов файл w+b %s  массива структур  ~~~  \n", pinidat);
 			system("pause"); exit(1);
-		}
+	 	}
 		else printf("   ~~~ Записан новв файл %s  массива структур  ~~~  \n", pinidat);
 	}
 	else
@@ -253,7 +253,7 @@ char* writebase2(FILE *phddfile, char* pinidat, struct word *pmemword, int count
 
 	fwrite(pmemword, sizeof(struct word), countnumword, phddfile);  // запись в файл hddfile = "*pinidat"
 
-																	//fclose(ptxtfile);	// из которого читается список слов
+																	//fclose(pfiletxt);	// из которого читается список слов
 																	//fclose(pmyfile);		// файл в котором сохранять базу слов
 	fclose(phddfile);		// закр файл в котором сохранять базу слов
 	printf("~~ Записан файл базы слов с пом-ю writebase2(): ( %s ) ~~\n", pinidat);  // temp
@@ -282,7 +282,7 @@ char* writebase2(FILE *phddfile, char* pinidat, struct word *pmemword, int count
 
  fwrite(pmemword, sizeof(struct word), countnumword, hddfile);  // запись в файл hddfile = "*pinidat"
 
- //fclose(ptxtfile);	// из которого читается список слов
+ //fclose(pfiletxt);	// из которого читается список слов
  //fclose(pmyfile);		// файл в котором сохранять базу слов
  fclose(hddfile);		// закр файл в котором сохранять базу слов
  printf("~~ Записан файл базы слов с пом-ю writebase2(): ( %s ) ~~\n", pinidat);  // temp

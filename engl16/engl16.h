@@ -28,11 +28,11 @@
 // заранее созданный и переданный в ф-ю,
 // pamountmem указ на РАЗМЕР д пам str word
 //multipl коэфф умнож при нехват дин памяти при token() 
-//ptxtbuf указ. на дин массив неразбитого текста - копии входн файла
+//pmemtxtbuf указ. на дин массив неразбитого текста - копии входн файла
 //pcount - указатель числа подсчитанных слов при сепарир
 // нужен для точного размера массива (несортированного) структур с англ словами
 // arv1 имя передаваемого через ком строку входного файла - нужен только для fprint()????
-struct word * sepmini(struct word *pmemword, long *pamountmem, char *ptxtbuf, int *pcount, char const *arv1);  //ф-я новая
+struct word * sepmini(struct word *pmemword, long *pamountmem, char *pmemtxtbuf, int *pcount, char const *arv1);  //ф-я новая
 																											   // 
 
 																											   //ф-я увелич размер int size дин памяти struct word *mem до размера *pnewsize до 
