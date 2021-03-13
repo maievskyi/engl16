@@ -5,7 +5,7 @@
 // комм после изм имени стр-т ininame на inidat
 // ком после изм им указ на стр-ру pdat1name на pmeminidat
 
-//24/09/20 после RRRengl09 развиваем работу с ininame.dat
+//24/09/20 после RRRengl09 развиваем работу с fini.dat
 // 31/07/20 дробление на мелкие ф-ции sepmini()
 // extensmem()
 // Начало работать  
@@ -23,7 +23,7 @@
 
 FILE *pfiletxt; //---> текст который читать - argv[1] первый аргумент ком строки "txt2.txt"
 FILE *pmyfile;	//---> указатель на структ. файл в котором сохранять базу слов - argv[2].dat"
-FILE *pdat1file;	//---> указатель на структ. файл в котором сохранять файлов ininame.dat
+FILE *pdat1file;	//---> указатель на структ. файл в котором сохранять файлов fini.dat
 FILE *pnosortfile;	//---> указатель на структ. ф в котор сохр несорт базу слов - argv[1]_nosort.dat"
 FILE *psortfile;	//---> указатель на структ. ф в котором сохр сорт базу слов - argv[1]_sort.dat"
 
@@ -52,19 +52,19 @@ int main(int argc, const char ** argv, const char** env)
 	if (argc == 1)	//если нет аргументов ком строки
 	{
 
-		// проверка на уже сущ-вание файла в котор сохр-ть имена ф-лов "ininame.dat"=======				
-		err = fopen_s(&pdat1file, "ininame.dat", "r+b");// открывается на чтение с дозаписью
+		// проверка на уже сущ-вание файла в котор сохр-ть имена ф-лов "fini.dat"=======				
+		err = fopen_s(&pdat1file, "fini.dat", "r+b");// открывается на чтение с дозаписью
 														// не существует файла имён - выходим или раб с ранее созданным,===================
 		if (err)	// выходим								
 		{
-			perror("ininame.dat");
+			perror("fini.dat");
 			puts("\n !!! на выход - не существовал файл пользователя \n с именами баз текстов \n");
 			system("pause");
 			exit(1);
 			// _________________________________________________________________________________
 			/*
 			puts("\n Будет создан Новый файл пользователя \n с новыми именами баз текстов \n");
-			err = fopen_s(&pdat1file, "ininame.dat", "w+b");// ф-л в котор сохр  имена ф-лов "niname.dat"
+			err = fopen_s(&pdat1file, "fini.dat", "w+b");// ф-л в котор сохр  имена ф-лов "niname.dat"
 			if (err)
 			{
 			puts("\n Ошибка! \n Неудачная попытка создания Нового файла пользователя \n\
@@ -77,7 +77,7 @@ int main(int argc, const char ** argv, const char** env)
 			//записываем в него содержимое дин память pmeminidat, (предполож = 0)
 			size_t result = fwrite(pmeminidat, QUANTITYCHARNAME, QUANTITYNAME, pdat1file);
 
-			puts("\n Создан Новый файл пользователя \"ininame.dat\"\n\
+			puts("\n Создан Новый файл пользователя \"fini.dat\"\n\
 			с новыми именами баз текстов \n");
 			system("pause");
 			//exit(1);
@@ -85,10 +85,10 @@ int main(int argc, const char ** argv, const char** env)
 		} // end ... не существует файла имён
 		  // end ... не существует файла имён
 
-		  //... уже существовал файл имён ininame.dat - работаем с ранее созд-м ф-лом--------
-		else     //... уже существовал файл имён ininame.dat - работаем с ранее созд-м ф-лом
+		  //... уже существовал файл имён fini.dat - работаем с ранее созд-м ф-лом--------
+		else     //... уже существовал файл имён fini.dat - работаем с ранее созд-м ф-лом
 		{
-			// тут потом можно вставить инстр выбора "хотите ли созд ininame.dat для другого txt"
+			// тут потом можно вставить инстр выбора "хотите ли созд fini.dat для другого txt"
 			// etc..............................................................................
 
 			// работаем с уже открытым ранее созданным ф-лом
@@ -103,7 +103,7 @@ int main(int argc, const char ** argv, const char** env)
 																		//считываем в дин память ->pmeminidat содержимое файлового потока pdat1file->
 			size_t result = fwrite(pmeminidat, QUANTITYCHARNAME, QUANTITYNAME, pdat1file);
 
-			puts("\n Считан \"ininame.dat\" с новыми именами баз текстов в ->pmeminidat \n");
+			puts("\n Считан \"fini.dat\" с новыми именами баз текстов в ->pmeminidat \n");
 			system("pause");		// отладка
 
 									// etc......................................................................
@@ -111,12 +111,12 @@ int main(int argc, const char ** argv, const char** env)
 
 
 
-		}  // end ifelse... уже с-вал файл имён ininame.dat - работали с ранее созд-м ф-лом
-		   //end проверка на уже сущ-вание файла в котор сохр-ть имена ф-лов "ininame.dat"	
+		}  // end ifelse... уже с-вал файл имён fini.dat - работали с ранее созд-м ф-лом
+		   //end проверка на уже сущ-вание файла в котор сохр-ть имена ф-лов "fini.dat"	
 
 		{//  отладка temp->
 			fclose(pdat1file);	// закрыть файловый ввод из которого читаются имена файлов
-								//err = fopen_s(&pdat1file, "ininame.dat", "r+b");// открывается на чтение с дозаписью
+								//err = fopen_s(&pdat1file, "fini.dat", "r+b");// открывается на чтение с дозаписью
 		}	// отладка <-temp
 	}	// end if...нет аргументов ком строки
 		// ...end if нет аргументов ком строки
@@ -147,13 +147,13 @@ int main(int argc, const char ** argv, const char** env)
 			}
 			// end ifelse проверка существования именно двух аргументов ком строки
 
-			//создание и заполнение ???? "0" Нов файла настроек "ininame.dat" пользователя 
+			//создание и заполнение ???? "0" Нов файла настроек "fini.dat" пользователя 
 			// тут надо писать
 
-			//созд указ pdat1file на нов файл имён польз-ля "ininame.dat" с нов именами баз текстов
+			//созд указ pdat1file на нов файл имён польз-ля "fini.dat" с нов именами баз текстов
 			{  // простой блок
-				puts("\n Будет создан Новый файл имён пользователя \n с новыми именами баз текстов \n");
-				err = fopen_s(&pdat1file, "ininame.dat", "w+b");// ф-л в котор сохр  имена ф-лов "niname.dat"
+				puts("\n Будет создан Новый fini.dat файл настроек пользователя \n с новыми именами баз текстов \n");
+				err = fopen_s(&pdat1file, "fini.dat", "w+b");// ф-л в котор сохр  имена ф-лов "niname.dat"
 				if (err)
 				{
 					puts("\n Ошибка! \n Неудачная попытка создания Нового файла пользователя \n\
@@ -168,17 +168,16 @@ int main(int argc, const char ** argv, const char** env)
 				else printf("  Выделена дин пам din1name = %d Bytes \n под %d записей базы имён программы \n",
 					QUANTITYNAME * sizeof(struct inidat), QUANTITYNAME);
 
-				//________________ просто темп строка
-				//запись в ф ininame.dat содержимое дин память pmeminidat, (?надоли обн  = 0) ============
+				//запись в ф fini.dat содержимое дин память pmeminidat, (?надоли обн  = 0) ============
 				size_t result = fwrite(pmeminidat, sizeof(struct inidat), QUANTITYNAME, pdat1file);
-				puts("\n Создан Новый файл пользователя \"ininame.dat\"\n\
+				puts("\n Создан Новый файл пользователя \"fini.dat\"\n\
  с новыми обнулёнными именами баз текстов \n");
 				fclose(pdat1file);	// закрыть файловый поток из которого читаются имена файлов
 				system("pause");
 			}// простой блок
 			 // простой блок
 
-			 // здесь все операции по сепарированию нового текста простой блок ===================
+			//// здесь все операции по сепарированию нового текста простой блок ================
 			{
 			// открытие входного txt файла ==============================================
 				err = fopen_s(&pfiletxt, argv[1], "rb");// инициализируется указатель FILE *pfiletxt 
@@ -195,9 +194,9 @@ int main(int argc, const char ** argv, const char** env)
 				long txtSize = 0;		//--- размер в байтах файла котор будет считан в дин память
 										// устанавливаем текущ позицию в конец файла, т е (смещ на 0 относ конца ф-ла)	 
 				fseek(pfiletxt, 0, SEEK_END);
-				txtSize = ftell(pfiletxt);                       // ПОЛУЧАЕМ РАЗМЕР В БАЙТАХ 
-																 // и записываем в txtSize
-																 //rewind(pfiletxt);  //+ очистка буфера      														
+				txtSize = ftell(pfiletxt); // ПОЛУЧАЕМ РАЗМЕР В БАЙТАХ 
+										// = записываем в txtSize
+									//rewind(pfiletxt);  //+ очистка буфера      														
 				fseek(pfiletxt, 0, SEEK_SET);	// перевести текущую поз на начало файла
 												//
 				printf("Размер памяти входного текста = %d Bytes \n", txtSize);
@@ -231,9 +230,9 @@ int main(int argc, const char ** argv, const char** env)
 					printf("Файл текста  считан-записан в ф-ции main нормально\n");
 					printf("		~~~ !!!!!Текст выше - это содержащийся в файле %s ~~~       \n \
 	!!!!!!!!на который указывала ком строка, далее сепарирование \n", argv[1]);	//  ???*
-#endif//     ~~~~~~~~~~~~~~~~~~~~~ после отл можнои убрать  ~~~~~~~~~~~~~~~
 				}
-				//~~~~~   самое первое выдел памти *pmemword под сепарирование структур прост блок =======================
+#endif//~~~~~~~~~~~~~~~~~~~~~ после отл можнои убрать  ~~~~~~~~~~~~~~~
+				//~~~~~  самое первое выдел пам *pmemword под сеп и поехали! прост блок =======================
 				{
 					printf("  Размер памяти под одну структуру %d байт\n", sizeof(struct word));
 					amountmem = MAX_WORD * sizeof(struct word);  //размер начально выд-мой памяти (байт)
@@ -242,7 +241,7 @@ int main(int argc, const char ** argv, const char** env)
 																	//временно - начальное количество MAX_WORD 
 					if (pmemword == NULL)printf("Не выделенна память под punsort \n");
 					else printf("  Выделенна память punsort = %d Bytes \n  под %d неотсортированных структур \
-  и поехали! сепарировать\n",
+  и ПОЕХАЛИ! сепарировать\n",
 						MAX_WORD * sizeof(struct word), MAX_WORD);				//    отладка
 				}
 
@@ -256,37 +255,35 @@ int main(int argc, const char ** argv, const char** env)
 				pmemword = sepmini(pmemword, pamountmem, pmemtxtbuf, pcountnumword, argv[1]);
 
 
-				//~~~~~~~~~~~~   далее запись в файл базу сепарированных но несортированных структур =================				
-				char *pnamewordnosort;  //указ дин строки для преобраз. имя файла "argv[1]_nosort.dat"
+				//~~~~~~~~~~   далее запись в файл базу WORD сепарированных но несортированных структур ===========				
+				char *pnamewordnosort;  //указ д строки для преобраз.rename имя ф "argv[1]_nosort.dat"
 										// ~~~~~~~преобразов имени - арг[1] для несортир-го масс *_nosort.dat вызовом ф - и rename2()
-				{//~~~~~~~  преобразов имени - арг [1] ком стр в нов стр *_nosort.dat вызовом ф-и rename2()
-					pnamewordnosort = rename2(argv[1], "_nosort.dat", 4);
+				//~~~~~~~  преобразов имени - арг [1] ком стр в нов стр *_nosort.dat вызовом ф-и rename2()
+				{	pnamewordnosort = rename2(argv[1], "_nosort.dat", 4);
 				}
 				//~~~~~~~~~~~~ запись в hdd файл(заранее переименов) базу несортир структур  ---///////////////  
 				writebase2(pnosortfile, pnamewordnosort, pmemword, countnumword);//
-																				 //pnosortfile - указ на откр внутр ф-ции hdd файл в котором сохранять базу слов 
-																				 //pnamewordnosort - уже сформированное ранее имя ф-ла для hdd ("argv[1]_nosort.dat")
-																				 // pmemword - указ на дин массив несорт структур, 
-																				 // countnumword - число несорт структур
-																				 //,?? возврат указ имя файла с  структурами ( ----- )????
+							//pnosortfile - указ на откр внутр ф-ции hdd файл в котором сохранять базу слов 
+							//pnamewordnosort - уже сформированное ранее имя ф-ла для hdd ("argv[1]_nosort.dat")
+							// pmemword - указ на дин массив несорт структур, 
+							// countnumword - число несорт структур
+							//,?? возврат указ имя файла с  структурами ( ----- )????
 				puts(pnamewordnosort);		//debug
 
-
-											//~~~~~~~~~~  запись в  дин пам pmeminidat имени файла несорт-ных структ word    ~~~~~~~~~
-				pmeminidat->idname = 0;
+				//~~~~~~~~~~  запись в  дин пам pmeminidat имени файла несорт-ных структ word    ~~~~~~~~~
+				{pmeminidat->idname = 0;
 				strncpy(pmeminidat->name, pnamewordnosort, EN1);
+				}
 
-
-				//~~~~~~~~~~   запись дин памяти с 1-м именем  XXX_nosrt.dat в файл имён "ininame.dat"   	
-				err = fopen_s(&pdat1file, "ininame.dat", "r+b");//XXX_nosrt.dat сохр в ф-л "ininame.dat"
+				//~~~~~~~~~~   запись дин памяти с 1-м именем  XXX_nosort.dat в файл имён "fini.dat"   	
+				err = fopen_s(&pdat1file, "fini.dat", "r+b");//XXX_nosrt.dat сохр в ф-л "fini.dat"
 				if (err)
 				{
 					puts("\n Ошибка! \n Неудача отытия ранее созданного ф-ла имён пользователя \n");
 					system("pause");
 					exit(1);
 				}
-				fwrite(pmeminidat, sizeof(struct inidat), QUANTITYNAME, pdat1file);//ininame.dat
-
+				fwrite(pmeminidat, sizeof(struct inidat), QUANTITYNAME, pdat1file);//fini.dat
 																					//~~~~~~~~~~   преобразование имени для сортировнного массива  _sort.dat
 				char *pnamesortword;  // указат на дин строка-имя читаемого файла "argv[1]_sort.dat"
 				pnamesortword = rename2(argv[1], "_sort.dat", 4);  // д п выдел ф rename2()
@@ -340,9 +337,9 @@ int main(int argc, const char ** argv, const char** env)
 				(pmeminidat + 1)->idname = 1;
 				strncpy((pmeminidat + 1)->name, pnamesortword, EN1);
 
-				//~~~~~~~~~~   вывод с второй записью в hdd файл имён ininame.dat   имени  XXX_sort.dat	---////////
+				//~~~~~~~~~~   вывод с второй записью в hdd файл имён fini.dat   имени  XXX_sort.dat	---////////
 				fseek(pdat1file, 0, SEEK_SET);
-				fwrite(pmeminidat, sizeof(struct inidat), QUANTITYNAME, pdat1file);//ininame.dat
+				fwrite(pmeminidat, sizeof(struct inidat), QUANTITYNAME, pdat1file);//fini.dat
 
 																					//	//~~~  temp????  ~~~~ открытие нового hdd файла для отсортированного масс структ слов
 																					//			puts("\n будет создан новый файл пользователя \n с отсортированными словами \n");
@@ -365,7 +362,7 @@ int main(int argc, const char ** argv, const char** env)
 			  // конец всех операций по сепарированию и сортировке нового текста простой блок
 
 			  //			fclose(psortfile);	//поработал всё записал и закрыл )) файл отсортированных слов ...dat
-			fclose(pdat1file);	//поработал всё записал и закрыл )) файл имён ininame.dat
+			fclose(pdat1file);	//поработал всё записал и закрыл )) файл имён fini.dat
 
 #ifdef RENAME
 			{

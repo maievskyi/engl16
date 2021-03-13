@@ -14,7 +14,7 @@
 // #define d ((&struct word a.c)-(&struct word a)) 
 // comm после изм имени стр-т ininame на inidat
 
-#define TEXT 
+#define TEXT //вывод считанн текста до сепарац 
 //#define SEPARATED  // sepmini()
 //#define M_SORT		// main()
 #define SORT
