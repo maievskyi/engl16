@@ -341,6 +341,7 @@ struct word * alphabet4(struct word *aa, int *psize, int(*pmeasure)(const void *
 	//  и присвоение указателю адреса функции
 	// вызов библиотечн функции qsort с передачей параметром по указателю моей функции measure
 	//pmeasure = measurealph;
+	printf(" \n\n~~~ Далее находимся внутри inside alphabet4()\n");
 	qsort(aa, *psize, sizeof(struct word), pmeasure);	//вызов сортировки
 #ifdef ALPHABET
 	int i;
@@ -374,16 +375,17 @@ struct word * idsort(struct word *pin, int *psize, int(*pmeasure)(const void *, 
 	struct word * ptemp = NULL;
 	ptemp = (struct word *) malloc((*psize) * sizeof(struct word));
 	if (ptemp == NULL)printf("idsort() Не выделенна память под врем массив ptemp \n");
-	printf(" \n\n~~~ Далее in idsort() -  id = %d \n", pin[0].id);
+	printf(" \n\n~~~ Далее находимся внутри inside idsort() -  id = %d \n", pin[0].id);
 	memmove(ptemp, pin, (*psize) * sizeof(struct word));//* sizeof(struct word)
 
-	printf(" \n\n~~~ Далее in idsort() - Отсортированный по алфав массив структур ~~~ id = %d \n", pin[0].id);
+	printf(" \n~~~ Далее после применения qsort() выв Отсортир-й массив стр-р ~~~ id = %d \n", pin[0].id);
 	// temp
 	qsort(ptemp, *psize, sizeof(struct word), pmeasure);	//вызов сортировки
-															//printf("    \n");
+	
+	int m;//printf("    \n");
 #ifdef IDSORT
 	printf("This \"Print\" inside to idsort() in engllib 2_c - \n");
-	int m;
+	
 	for (m = 0; m < *psize; m++)				//
 	{													//
 		printf(" _ %3d.  id=%3d ___ ( %s )___[ %d ]   \n", m, ptemp[m].id, ptemp[m].en, ptemp[m].repeat);    // temp
@@ -496,7 +498,7 @@ struct word * reduct3(struct word *pa, int *psize)	//сокращает повт
 	{													//
 		printf(" _ %3d.  id=%3d --- ( %s )---[ %d ]   \n", m, pret[m].id, pret[m].en, pret[m].repeat);    // temp
 	}
-	printf(" \n\n~~~ далее in reduct3() - отсортированный массив структур ~~~ pret[0].id = %d\n", pret[0].id);
+	printf(" \n\n~~~ далее выходим из reduct3() - алф отсорт и уменьш повтор массив структур ~~~ pret[0].id = %d\n", pret[0].id);
 #endif// REDUCT3
 	free(ptempstr);
 	free(prev);

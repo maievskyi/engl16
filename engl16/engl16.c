@@ -256,10 +256,10 @@ int main(int argc, const char ** argv, const char** env)
 				pmemword = sepmini(pmemword, pamountmem, pmemtxtbuf, pcountnumword, argv[1]);
 
 
-				//~~~~~~~~~~   далее запись в файл базу WORDnosort сепарированных но несортированных структур ===========				
+				//===~~~~~~~~  далее запись в файл базу WORD_nosort сепарированных но несортированных структур ===========				
+				
+				//---~~~~~~ для несортировнного массива преобразов имени XXX_nosort.dat вызовом ф-и rename2()
 				char *pnamewordnosort;  //указ д строки для преобраз.rename имя ф "argv[1]_nosort.dat"
-				// ~~~~~~~преобразов имени - арг[1] для несортир-го масс *_nosort.dat вызовом ф - и rename2()
-				//~~~~~~~  преобразов имени - арг [1] ком стр в нов стр *_nosort.dat вызовом ф-и rename2()
 				{	pnamewordnosort = rename2(argv[1], "_nosort.dat", 4);
 				}
 			//~~~~~~~~~~~~ запись в WORD hdd файл(заранее переим) базу несортир структур ---///////////////  
@@ -271,7 +271,7 @@ int main(int argc, const char ** argv, const char** env)
 							//,?? возврат указ имя файла с  структурами ( ----- )????
 				puts(pnamewordnosort);		//debug вывод имени .hdd несортированных слов
 
-			//~~~~~~~~~~  запись в дин пам pmeminidat <- ИМЕНИ  XXX_nosort.dat    ~~~~~~~~~
+			//~~~~~~~~~~  запись в дин пам pfini   <- ИМЕНИ  XXX_nosort.dat    ~~~~~~~~~
 				{pmeminidat->idname = 0;
 				strncpy(pmeminidat->name, pnamewordnosort, EN1);
 				}
@@ -286,8 +286,8 @@ int main(int argc, const char ** argv, const char** env)
 				}
 				fwrite(pmeminidat, sizeof(struct inidat), QUANTITYNAME, pfini);//fini.dat
 																			   
-			//~~~~~~~~~~   преобразование имени для сортировнного массива  XXX_sort.dat
-				char *pnamesortword;  // указат на дин строка-имя читаемого файла "argv[1]_sort.dat"
+			//~~~~~~~~~~ для сортировки массива преобразование имени XXX_sort.dat
+				char *pnamesortword;  // указат на дин строка-имя  файла "argv[1]_sort.dat"
 				pnamesortword = rename2(argv[1], "_sort.dat", 4);  // д п выдел ф rename2()
 				puts(pnamesortword); 		//debug
 
@@ -301,8 +301,8 @@ int main(int argc, const char ** argv, const char** env)
 				if (pmemsortword == NULL)printf("Не выделенна память под pmemsortword \n");
 				else printf("  Выделенна память psort = %d Bytes \n  под %d сортированных структур \
   и поехали! сортировать\n",
-					(*pcountnumword) * sizeof(struct word), (*pcountnumword));		//    отладка
-																					//-----------   цикл копирования в новую дин память несортиров слов для сортировки 
+					(*pcountnumword) * sizeof(struct word), (*pcountnumword));// отладка
+//-----------   цикл переноса-копирования в новую дин память несортиров слов для сортировки 
 				int temp = 0;
 				for (temp = 0; temp < *pcountnumword; temp++)
 				{
@@ -314,16 +314,17 @@ int main(int argc, const char ** argv, const char** env)
 				}
 				// ~~~~~~~~~~ вызов  алфавитной сортировки  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 
 				{
-					//int disloc = 0;  //расположение поля в структуре word
+					//int disloc = 0;  //расположение поля в структуре word 
 					int disloc = &pmemword[0].id - &pmemword[0].id;
 					pmemsortword = alphabet4(pmemsortword, pcountnumword, measurealph, disloc);//сортировка
-					palphabetword = reduct3(pmemsortword, pcountnumword);			//сокращение повторений
-																					//по указ palphabetword находится  алфавитно сортирован массив с заполн полем repeat
+					palphabetword = reduct3(pmemsortword, pcountnumword);
+					//сокращение повторений
+					//теперь palphabetword указ на алфавитно-отсортирт масс стуктур																//по указ palphabetword находится  алфавитно сортирован массив с заполн полем repeat
 				}
 
 				//
 				//printf(" \ntemp  Далее in engl12.C  Отсорт-й мас- стр pret[0].id = %d\n", palphabetword[0].id);
-				int disloc = 0;
+				int disloc = 0;  // далее Сортировка по разным id стр word уже алфавтитно-отсорт массива
 				pmemsortword = idsort(palphabetword, pcountnumword, measurerepeat, disloc);//сортировка
 
 				pmemsortword = alphabet4(pmemsortword, pcountnumword, measurealph, disloc);//сортировка

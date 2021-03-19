@@ -19,8 +19,9 @@
 //#define M_SORT		// main()
 #define SORT
 //#define ALPHABET // Отсортирован alphabet3()
-//#define REDUCT3  //_________________________________
 #define IDSORT
+#define REDUCT3  //_________________________________
+
 
 //#define MAX_WORD1 100 //размер массива структ word
 
