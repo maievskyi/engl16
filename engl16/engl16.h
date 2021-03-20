@@ -18,7 +18,7 @@
 //#define SEPARATED  // sepmini()
 //#define M_SORT		// main()
 #define SORT
-//#define ALPHABET // Отсортирован alphabet3()
+#define ALPHABET // Отсортирован alphabet3()
 #define IDSORT
 #define REDUCT3  //_________________________________
 
@@ -71,7 +71,10 @@ struct word * idsort(struct word *pin, int *psize, int(*pmeasure)(const void *, 
 // ЗАПОЛНЯЕТ ID поля масс ст-р в зависимости от парам ???????
 
 int measurerepeat(const void * a, const void * b);//
-												  // ф -я измеряющая ENGL алфавитн порядок располож двух стукт(по указателям на них) 
+// ф -я измеряющая ENGL частотный порядок располож двух стукт(по указателям на них) 
+
+int measurerepeatalph(const void * a, const void * b);//
+// ф -я измеряющая ENGL частотный (с учётом алфавита) порядок располож двух стукт(по указателям на них) 
 
 struct word * reduct3(struct word *pa, int *psize);// pa-указ на массив стр-ур, 
 												   //psize-указ на пер-ю числ  элем-тов в масс 

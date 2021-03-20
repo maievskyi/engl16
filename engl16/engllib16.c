@@ -416,6 +416,32 @@ int measurerepeat(const void * a, const void * b)		//
 	return temp;
 };//    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%   END measurerepeat()   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%  
 
+  ///////////////////==========     ф-я сравнения строк по повтор + алфавит =======///////////
+int measurerepeatalph(const void * a, const void * b)		//   
+// ф -я измеряющая ENGL алфавитн порядок располож двух стукт(по указателям на них) 
+														// + если a>b 0 if a=b - if a<b
+{
+	const int  repeat1 = (((struct word *)a)->repeat);
+	const int  repeat2 = (((struct word *)b)->repeat);
+	int temp = (repeat2)-(repeat1);
+	if(temp==0)
+	{
+		const char * string1 = (((struct word *)a)->en);
+		const char * string2 = (((struct word *)b)->en);
+		int temp = _stricmp(string1, string2);	// если первый арг больше второго
+												// то возврат положительного числа
+		return temp;
+	}
+	else
+	{
+		return temp;
+	}
+
+
+	
+};//    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%   END measurerepeatalph()   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
+
+
   ////////////============   a-я изменения строки - имени файла   ============/////////////////////////
 char* rename2(const char* poldname, char *paddstring, int del) // ф -я укорачивает имя poldname.ext
 															   //на del и  добавляет paddstring віделяет дин пам нужного разм и возвл указ на него

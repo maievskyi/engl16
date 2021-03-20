@@ -325,9 +325,9 @@ int main(int argc, const char ** argv, const char** env)
 				//
 				//printf(" \ntemp  Далее in engl12.C  Отсорт-й мас- стр pret[0].id = %d\n", palphabetword[0].id);
 				int disloc = 0;  // далее Сортировка по разным id стр word уже алфавтитно-отсорт массива
-				pmemsortword = idsort(palphabetword, pcountnumword, measurerepeat, disloc);//сортировка
+				pmemsortword = idsort(palphabetword, pcountnumword, measurerepeatalph, disloc);//сортировка
 
-				pmemsortword = alphabet4(pmemsortword, pcountnumword, measurealph, disloc);//сортировка
+				//pmemsortword = alphabet4(pmemsortword, pcountnumword, measurealph, disloc);//сортировка
 
 				printf("This \"Print\" inside to engl12_c - \n");
 				int m;
