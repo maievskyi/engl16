@@ -301,7 +301,7 @@ int main(int argc, const char ** argv, const char** env)
 				if (pmemsortword == NULL)printf("Не выделенна память под pmemsortword \n");
 				else printf("  Выделенна память psort = %d Bytes \n  под %d сортированных структур \
   и поехали! сортировать\n",
-					(*pcountnumword) * sizeof(struct word), (*pcountnumword));// отладка
+					(*pcountnumword) * sizeof(struct word), (*pcountnumword));
 //-----------   цикл переноса-копирования в новую дин память несортиров слов для сортировки 
 				int temp = 0;
 				for (temp = 0; temp < *pcountnumword; temp++)
@@ -312,28 +312,32 @@ int main(int argc, const char ** argv, const char** env)
 						printf("m_sort %d - %s \n", temp, pmemsortword[temp].en);  // отладка
 #endif
 				}
-				// ~~~~~~~~~~ вызов  алфавитной сортировки  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 
+				// ~~~~~~~~~~ вызов  алфавитной сортировки и сокращение повторов  ~~~~~~~~~~~~~~~~~~~~~~~~~~ 
 				{
 					//int disloc = 0;  //расположение поля в структуре word 
 					int disloc = &pmemword[0].id - &pmemword[0].id;
+					printf(" Первая алф сортировка без сокращений:/n ");
 					pmemsortword = alphabet4(pmemsortword, pcountnumword, measurealph, disloc);//сортировка
+					printf(" Сокращения после перввой алф сортировки :/n ");
 					palphabetword = reduct3(pmemsortword, pcountnumword);
 					//сокращение повторений
-					//теперь palphabetword указ на алфавитно-отсортирт масс стуктур																//по указ palphabetword находится  алфавитно сортирован массив с заполн полем repeat
+					//теперь palphabetword указ на алфавитно-отсортирт масс стуктур									
+					//по указ palphabetword находится  алфавитно сортирован массив с заполн полем repeat
 				}
 
 				//
 				//printf(" \ntemp  Далее in engl12.C  Отсорт-й мас- стр pret[0].id = %d\n", palphabetword[0].id);
+				printf("далее Сортировка idsort() структ частотно + алф сортированны\n");
 				int disloc = 0;  // далее Сортировка по разным id стр word уже алфавтитно-отсорт массива
 				pmemsortword = idsort(palphabetword, pcountnumword, measurerepeatalph, disloc);//сортировка
 
-				//pmemsortword = alphabet4(pmemsortword, pcountnumword, measurealph, disloc);//сортировка
+//				pmemsortword = alphabet4(pmemsortword, pcountnumword, measurealph, disloc);//алф сортировка
 
-				printf("This \"Print\" inside to engl12_c - \n");
+				printf("This \"Print\" inside to engl16_c - \n");
 				int m;
 				for (m = 0; m < *pcountnumword; m++)
 				{
-					printf(" _ %3d.  id=%3d  repeat_id=%3d _( %s )___[ %d ]   \n", m, pmemsortword[m].id, pmemsortword[m].repeat_id, pmemsortword[m].en, pmemsortword[m].repeat);    // temp
+					printf(" _ %3d.  repeat_id=%3d id=%3d  _( %s )___[ %d ]   \n", m, pmemsortword[m].repeat_id, pmemsortword[m].id, pmemsortword[m].en, pmemsortword[m].repeat);    // temp
 				}
 
 				//~~~~~~~~~~  запись в дин пам pmeminidat имени файла отсорт-ных структ word    ~~~~~~~~~
@@ -344,31 +348,31 @@ int main(int argc, const char ** argv, const char** env)
 				fseek(pfini, 0, SEEK_SET);
 				fwrite(pmeminidat, sizeof(struct inidat), QUANTITYNAME, pfini);//fini.dat
 
-																					//	//~~~  temp????  ~~~~ открытие нового hdd файла для отсортированного масс структ слов
-																					//			puts("\n будет создан новый файл пользователя \n с отсортированными словами \n");
-																					//			err = fopen_s(&psortfile, pnamesortword, "w+b");// ф-л в котор сохр  имена ф-лов "niname.dat"
-																					//			if (err)
-																					//			{
-																					//				puts("\n ошибка! \n неудачная попытка создания нового файла пользователя \n\ 
-																					//с отсортированными словами\n");
-																					//				system("pause");
-																					//				exit(1);
-																					//			}
+			//	//~~~  temp????  ~~~~ открытие нового hdd файла для отсортированного масс структ слов
+			//			puts("\n будет создан новый файл пользователя \n с отсортированными словами \n");
+			//			err = fopen_s(&psortfile, pnamesortword, "w+b");// ф-л в котор сохр  имена ф-лов "niname.dat"
+			//			if (err)
+			//			{
+			//				puts("\n ошибка! \n неудачная попытка создания нового файла пользователя \n\ 
+			//с отсортированными словами\n");
+			//				system("pause");
+			//				exit(1);
+			//			}
 
-																					//~~~~~~~~~~~~ запись в hdd файл(заранее переименов) базу отсортир структур  ---////////  
-				writebase2(psortfile, pnamesortword, palphabetword, countnumword);//  countnumword  ??????????????????:?
-																				  //pnamesortword-  уже сформированное ранее имя ф-ла для hdd
-																				  // palphabetword - указ на дин мас отсорт структур, pcountnumword - число отсорт структ
-																				  //, возврат указ имя файла с  структурами ( ----- )
+			//~~~~~~~~~~~~ запись в hdd файл(заранее переименов) базу отсортир структур  ---////////  
+			writebase2(psortfile, pnamesortword, palphabetword, countnumword);//  countnumword  ??????????????????:?
+			//pnamesortword-  уже сформированное ранее имя ф-ла для hdd
+			// palphabetword - указ на дин мас отсорт структур, pcountnumword - число отсорт структ
+			//, возврат указ имя файла с  структурами ( ----- )
 
 			} // конец всех операций по сепарированию и сортировке нового текста простой блок
 			  // конец всех операций по сепарированию и сортировке нового текста простой блок
 
-			  //			fclose(psortfile);	//поработал всё записал и закрыл )) файл отсортированных слов ...dat
+			  //	fclose(psortfile);	//поработал всё записал и закрыл )) файл отсортированных слов ...dat
 			fclose(pfini);	//поработал всё записал и закрыл )) файл имён fini.dat
 
 #ifdef RENAME
-			{
+			{ 
 				char * ptempstr1 = (char*)malloc(32 * sizeof(char)); // выделить дин память
 				char * ptempstr2 = (char*)malloc(32 * sizeof(char)); // выделить дин память
 																	 //char * pnewname0 = (char*)malloc(64 * sizeof(char)); // выделить дин память
@@ -430,7 +434,7 @@ int main(int argc, const char ** argv, const char** env)
 
 				system("cls");
 				printf("                 Press key \" \" for study or any key for exit \n");
-				printf("\n\n   %3d. id=%3d  repeat = %3d _  (    %s     ) _ [ %d ]   \n", m, pmemsortword[m].id, pmemsortword[m].repeat_id, pmemsortword[m].en, pmemsortword[m].repeat);
+				printf("\n\n   %3d. id=%3d  repeat id = %3d _  (    %s     ) _ [ %d ]   \n", m, pmemsortword[m].id, pmemsortword[m].repeat_id, pmemsortword[m].en, pmemsortword[m].repeat);
 				m++;
 
 				lett = getch(stdin);

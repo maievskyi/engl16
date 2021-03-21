@@ -388,7 +388,7 @@ struct word * idsort(struct word *pin, int *psize, int(*pmeasure)(const void *, 
 	
 	for (m = 0; m < *psize; m++)				//
 	{													//
-		printf(" _ %3d.  id=%3d ___ ( %s )___[ %d ]   \n", m, ptemp[m].id, ptemp[m].en, ptemp[m].repeat);    // temp
+		printf("m- %3d.  id=%3d ___ ( %s )___[ %d ]   \n", m, ptemp[m].id, ptemp[m].en, ptemp[m].repeat);    // temp
 	}
 #endif
 	printf("    \n");
@@ -524,12 +524,12 @@ struct word * reduct3(struct word *pa, int *psize)	//сокращает повт
 	{													//
 		printf(" _ %3d.  id=%3d --- ( %s )---[ %d ]   \n", m, pret[m].id, pret[m].en, pret[m].repeat);    // temp
 	}
-	printf(" \n\n~~~ далее выходим из reduct3() - алф отсорт и уменьш повтор массив структур ~~~ pret[0].id = %d\n", pret[0].id);
+	printf(" \n~~~ далее выход из reduct3() - алф отсорт и уменьш повтор массив структур ~~~ pret[0].id = %d\n\n", pret[0].id);
 #endif// REDUCT3
 	free(ptempstr);
 	free(prev);
 	return pret;
-}//    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%   end reduct2()   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
+}//    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%   end reduct3()   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
 
 
 
