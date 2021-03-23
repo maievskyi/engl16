@@ -12,15 +12,13 @@
 #define QUANTITYCHARNAME 256 //?? кол-во байт в одной записи в масс имён ф-в прогр ??
 #define QUANTITYNAME 8 // кол-во записей элементов стр-тур в массиве имён ф-в программы
 // #define d ((&struct word a.c)-(&struct word a)) 
-// comm после изм имени стр-т ininame на inidat
-
 #define TEXT //вывод считанн текста до сепарац 
 //#define SEPARATED  // sepmini()
 //#define M_SORT		// main()
 #define SORT
-#define ALPHABET // Отсортирован alphabet3()
+//#define ALPHABET // Отсортирован alphabet3()
 #define IDSORT
-#define REDUCT3  //_________________________________
+//#define REDUCT3  //_________________________________
 
 
 //#define MAX_WORD1 100 //размер массива структ word
@@ -34,41 +32,35 @@
 // нужен для точного размера массива (несортированного) структур с англ словами
 // arv1 имя передаваемого через ком строку входного файла - нужен только для fprint()????
 struct word * sepmini(struct word *pmemword, long *pamountmem, char *pmemtxtbuf, int *pcount, char const *arv1);  //ф-я новая
-																											   // 
-
-																											   //ф-я увелич размер int size дин памяти struct word *mem до размера *pnewsize до 
-																											   //размера *pnewsize  и передающая в него содерж старой памяти struct word *pmemword 
-																											   // и возвр ????????????????? указ на нов память
+	//ф-я увелич размер int size дин памяти struct word *mem до размера *pnewsize до 
+	//размера *pnewsize  и передающая в него содерж старой памяти struct word *pmemword 
+	// и возвр ????????????????? указ на нов память
 struct word *extensmem(struct word *pmemword, long *pamountmem, long newamountword, int *pcountnumword);
 
-char* writebase(const char **argv, struct word *pmemword, int countnumword);	//, char *pnamenosort
-
 char* writebase2(FILE *phddfile, char * namefilehdd, struct word *pmemword, int countnumword);	// 
-																								// phddfile указ на hdd файл в котором сохранять базу слов 
-																								//  namefilehdd - имя на диске; pmemword - указ на массив структур, 
-																								//countnumword - число несорт структур; возврат указ имя файла структур - namefilehdd;
-																								//ф-я сама открывает r+и и потом закрывает файл на hdd 
+	// phddfile указ на hdd файл в котором сохранять базу слов 
+	//  namefilehdd - имя на диске; pmemword - указ на массив структур, 
+	//countnumword - число несорт структур; возврат указ имя файла структур - namefilehdd;
+	//ф-я сама открывает r+и и потом закрывает файл на hdd 
 
-struct word * alphabet2(struct word *, int *);  // возврат указ пам с отсортир  
-												//по алфав масс структ, дин память с мас структур,  количество структур 
-struct word * alphabet3(struct word *aa, int *psize);
-// возврат указатель на память с отсортир по алфав массивом структ, 
-// aa дин память с маc структур,  psize количество структур 
+struct word * alphabet3(struct word *aa, int *psize);//
+	// возврат указатель на память с отсортир по алфав массивом структ, 
+	// aa дин память с маc структур,  psize количество структур 
 struct word * alphabet4(struct word *aa, int *psize, int(*pmeasure)(const void *, const void*), int disloc);
-// возврат указатель на память с отсортир по алфав массивом структ, 
-// aa дин память с маc структур,  psize количество структур 
-// *pmeasure -указ на ф осуществляющую сортировку
-// disloc - смещение поля в структуре которое нумеруется при сортировке
+	// возврат указатель на память с отсортир по алфав массивом структ, 
+	// aa дин память с маc структур,  psize количество структур 
+	// *pmeasure -указ на ф осуществляющую сортировку
+	// disloc - смещение поля в структуре которое нумеруется при сортировке
 int measurealph(const void *, const void *);   //
-											   // ф -я измеряющая ENGL алфавитн порядок располож двух стукт(по указателям на них)
-											   // если первый арг больше второго то возврат положительного числа
+	// ф -я измеряющая ENGL алфавитн порядок располож двух стукт(по указателям на них)
+	// если первый арг больше второго то возврат положительного числа
 
 struct word * idsort(struct word *pin, int *psize, int(*pmeasure)(const void *, const void *), int disloc);
-// возврат указатель на память с отсортир по алфав массивом структ, 
-// aa дин память с маc структур, psize - указ количество структур 
-// *pmeasure -указ на ф осуществляющую сортировку
-// disloc - смещение поля в структуре которое нумеруется при сортировке
-// ЗАПОЛНЯЕТ ID поля масс ст-р в зависимости от парам ???????
+	// возврат указатель на память с отсортир по алфав массивом структ, 
+	// aa дин память с маc структур, psize - указ количество структур 
+	// *pmeasure -указ на ф осуществляющую сортировку
+	// disloc - смещение поля в структуре которое нумеруется при сортировке
+	// ЗАПОЛНЯЕТ ID поля масс ст-р в зависимости от парам ???????
 
 int measurerepeat(const void * a, const void * b);//
 // ф -я измеряющая ENGL частотный порядок располож двух стукт(по указателям на них) 
@@ -79,10 +71,9 @@ int measurerepeatalph(const void * a, const void * b);//
 struct word * reduct3(struct word *pa, int *psize);// pa-указ на массив стр-ур, 
 												   //psize-указ на пер-ю числ  элем-тов в масс 
 
-void rename1(const char* oldname, char *letteadd, char *newname); //ф -я изменяет  врезая в
-																  //конец имени oldname, окончание - имя letteadd 
 char* rename2(const char* poldname, char *paddstring, int del); // ф -я укорачивает имя poldname.ext
 																//на del и  добавляет paddstring віделяет дин пам нужного разм и возвл указ на него
+
 struct word       // стр для хранения слов с переводом и др в
 {
 	int id;  // алфавитная id нумерация

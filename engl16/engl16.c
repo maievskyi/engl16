@@ -190,7 +190,7 @@ int main(int argc, const char ** argv, const char** env)
 
 			// перенос ф-ла текста в оперативную динам память, для цього ---> ================
 
-					//~~~~~~~  определяем РАЗМЕР файла в байтах  ------------------------------------------
+					//~~~~~~~  определяем РАЗМЕР входн ***.txt файла в байтах  ---------------
 				long txtSize = 0;	//--- размер в байтах файла котор будет считан в дин память
 				// устанавливаем текущ позицию в конец файла, т е (смещ на 0 относ конца ф-ла)	 
 				fseek(pfiletxt, 0, SEEK_END);
@@ -199,7 +199,7 @@ int main(int argc, const char ** argv, const char** env)
 				//rewind(pfiletxt);  //+ очистка буфера      														
 				fseek(pfiletxt, 0, SEEK_SET);	// перевести текущую поз на начало файла
 												//
-				printf("Размер памяти входного текста = %d Bytes \n", txtSize);
+				printf("Размер памяти входного текста из ф-ла .txt = %d Bytes \n", txtSize);
 
 				//~~~~~~  выделение дин памяти буфеp *pmemtxtbuf---------------------------------
 				char * pmemtxtbuf;			//--->  локальн указатель на дин пам. pmemtxtbuf 
@@ -331,9 +331,7 @@ int main(int argc, const char ** argv, const char** env)
 				int disloc = 0;  // далее Сортировка по разным id стр word уже алфавтитно-отсорт массива
 				pmemsortword = idsort(palphabetword, pcountnumword, measurerepeatalph, disloc);//сортировка
 
-//				pmemsortword = alphabet4(pmemsortword, pcountnumword, measurealph, disloc);//алф сортировка
-
-				printf("This \"Print\" inside to engl16_c - \n");
+				printf("This \"Print\" inside to engl16.c - \n");
 				int m;
 				for (m = 0; m < *pcountnumword; m++)
 				{
@@ -366,8 +364,7 @@ int main(int argc, const char ** argv, const char** env)
 			//, возврат указ имя файла с  структурами ( ----- )
 
 			} // конец всех операций по сепарированию и сортировке нового текста простой блок
-			  // конец всех операций по сепарированию и сортировке нового текста простой блок
-
+			  
 			  //	fclose(psortfile);	//поработал всё записал и закрыл )) файл отсортированных слов ...dat
 			fclose(pfini);	//поработал всё записал и закрыл )) файл имён fini.dat
 
@@ -418,7 +415,7 @@ int main(int argc, const char ** argv, const char** env)
 				// ... конец надо ли выбрать нов текст для сепарирования ----- 
 
 				////////////>>>>>>>>>>>>>>>>>>>   Движок   <<<<<<<</////////////////////////
-		int go = 1;
+		int go = 1;		//temp FLAG
 		if (go == 1)
 		{
 			//system("cls");
@@ -426,7 +423,7 @@ int main(int argc, const char ** argv, const char** env)
 			int lett;
 			lett = getch(stdin);
 			int m = 0;
-			while (lett == ' ')
+			while (lett == ' ')	//
 			{
 
 				//printf("This \"Print\" inside GO \n");
@@ -434,7 +431,8 @@ int main(int argc, const char ** argv, const char** env)
 
 				system("cls");
 				printf("                 Press key \" \" for study or any key for exit \n");
-				printf("\n\n   %3d. id=%3d  repeat id = %3d _  (    %s     ) _ [ %d ]   \n", m, pmemsortword[m].id, pmemsortword[m].repeat_id, pmemsortword[m].en, pmemsortword[m].repeat);
+				printf("\n\n   %3d. id=%3d  repeat id = %3d _  (    %s     ) _ [ %d ]   \n"\
+				, m, pmemsortword[m].id, pmemsortword[m].repeat_id, pmemsortword[m].en, pmemsortword[m].repeat);
 				m++;
 
 				lett = getch(stdin);
