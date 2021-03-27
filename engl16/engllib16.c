@@ -65,14 +65,15 @@ struct word * sepmini(struct word *pmemword, long *pamountmem, char * pmemtxtbuf
 		while (token1[ix])					// начиная с первого символа из токена (char-строки) 
 											//  пока в  token1[ix] не встретится \0
 		{									//  ПРИВОДИМ СИМВОЛЫ К НИЖН РЕГИСТРУ 
-			tokenbuf[ix] = (char)tolower(token1[ix]);  //посимвольно преобраз-е текущ  символа ст-ки в СТРОЧНЫЙ
+			tokenbuf[ix] = (char)tolower(token1[ix]);  //посимвольно преобраз-е текущ символа ст-ки в СТРОЧНЫЙ
 			ix++;                                   // инкремент индекса символов в строке
 		}
-		tokenbuf[ix] = (char)tolower(token1[ix]);		// запмсь  последнего =/0 символа ?
-														//- end - символы приведены к нижн регистру 
-														//*pcountnumword += 1;     // ???????????????????????????????????????
+		tokenbuf[ix] = (char)tolower(token1[ix]);	
+		// запмсь  последнего =/0 символа ?
+		//- end - символы приведены к нижн регистру 
+		//*pcountnumword += 1;     // ?????????????????
 
-														// Но! Если счётч слов достиг предела макс памяти массива под структ тогда ========================
+		// Но! Если счётч слов достиг предела макс памяти массива под структ тогда ========================
 		if (*pcountnumword == maxmemstr - 1)  //pcount - аргумент ф-ции sepmini ??????????=========================
 											  // счётчик слов достиг заранее введенной в перем границы MAX_WORD
 											  // или предыдущего умножения maxmemstr = maxmemstr * MULT_DIN_MEM;
@@ -85,14 +86,13 @@ struct word * sepmini(struct word *pmemword, long *pamountmem, char * pmemtxtbuf
 			printf("~~   Вызов ф-ции extensmem()  ~~\n");
 			pmemword = extensmem(pmemword, pamountmem, newamountword, pcountnumword);
 
-
 		} // end if	4 .............................................................
 		if (ix > 1)
 		{
 			strcpy_s((pmemword + *(pcountnumword))->en, EN, tokenbuf);	// заполнение поля 
-																		// структуры но ! надо сравнить на длинну ?
+											// структуры но ! надо сравнить на длинну ?
 			((pmemword + *(pcountnumword)))->id = (int)(*(pcountnumword)+1); //заполнение id
-																			 // id отличается от countnumword на 1 ---   id=1   countnumword=0
+						// id отличается от countnumword на 1 ---   id=1   countnumword=0
 			((pmemword + *(pcountnumword)))->repeat = 0;   // наверно temp ??
 #ifdef SEPARATED
 			printf("%4d. r=%d  id= %4d. - { %s }  ->  [ %s ]\n", *pcountnumword, \
@@ -125,17 +125,17 @@ struct word * sepmini(struct word *pmemword, long *pamountmem, char * pmemtxtbuf
 (realamountword) * sizeof(struct word), (realamountword));			//   
 
 
-																	//=================================================================================
-																	//=================================================================================
-																	//=================================================================================
+//=================================================================================
+//=================================================================================
+//=================================================================================
 	return pmemword;
 }//    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%   END sepmini()   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
  //////////////==== увелич размер дин памяти и перенос в содерж старой пам  ======/////////////////////
-struct word *extensmem(struct word *pmemword, long *pamountmem, long newamountword, int *pcountnumword)//
-																									   //при достижении счётчика заполнения struct word значения выделенного разм памяти size вызывается ф-я
-																									   // котори увелич размер *pamountmem дин памяти struct word * до размера *pnewsize  и передёт в него содерж 
-																									   // старой памяти struct word *pmemword и возвр ?????????????????????? указатель на нов память
+struct word *extensmem(struct word *pmemword, long *pamountmem, long newamountword, int *pcountnumword)
+	//при достижении счётчика заполнения struct word значения выделенного разм памяти size вызывается ф-я
+	// котори увелич размер *pamountmem дин памяти struct word * до размера *pnewsize  и передёт в него содерж 
+	// старой памяти struct word *pmemword и возвр ?????????????????????? указатель на нов память
 {
 	printf("~~   Начинает работать ф-ция extensmem()  ~~\n");
 	printf("Аргументы *pamountmem-%d;  newamountword - { %d }; *pcountnumword - [ %d ]\n", *pamountmem, newamountword, *pcountnumword);   // отладочная
@@ -169,7 +169,7 @@ struct word *extensmem(struct word *pmemword, long *pamountmem, long newamountwo
  /////////////////// ======== запись в файл(заранее переименов) базу  структур   ==========///////////  
 char* writebase2(FILE *phddfile, char* pinidat, struct word *pmemword, int countnumword)//
 					//phddfile указ на hdd файл в котором сохранять базу слов    ??("argv[1]_nosort.dat")?
-					//pinidat -  уже сформированное ранее имя ф-ла для hdd
+					//pinidat -  уже сформированное ранее ИМЯ ф-ла для hdd
 					// pmemword - указ на дин массив несорт структур, 
 					//countnumword - число стр динмассива
 					//, возврат указ имя файла с  структурами ( ----- )
@@ -207,8 +207,8 @@ char* writebase2(FILE *phddfile, char* pinidat, struct word *pmemword, int count
 
 	fwrite(pmemword, sizeof(struct word), countnumword, phddfile);  // запись в файл hddfile = "*pinidat"
 
-																	//fclose(pfiletxt);	// из которого читается список слов
-																	//fclose(pmyfile);		// файл в котором сохранять базу слов
+																	//fclose(pFiletxt);	// из которого читается список слов
+																	//fclose(pmyFile);		// файл в котором сохранять базу слов
 	fclose(phddfile);		// закр файл в котором сохранять базу слов
 	printf("~~ Записан файл базы слов с пом-ю writebase2(): ( %s ) ~~\n", pinidat);  // temp
 																					   //...............................................................
