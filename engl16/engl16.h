@@ -10,7 +10,7 @@
 #define NEWTEXT 1 //ФЛАГ ДЛЯ КОДА НОВОГО ТЕКСТА
 #define OLDTEXT 0 //ФЛАГ ДЛЯ КОДА СТАРОГО ТЕКСТА
 #define QUANTITYCHARNAME 256 //?? кол-во байт в одной записи в масс имён ф-в прогр ??
-#define QUANTITYNAME 2 // кол-во записей элементов стр-тур в массиве имён ф-в программы
+#define QUANTITYNAME 1 // кол-во записей элементов стр-тур в массиве имён ф-в программы
 // #define d ((&struct word a.c)-(&struct word a)) 
 #define TEXT //вывод считанн текста до сепарац 
 //#define SEPARATED  // sepmini()
@@ -92,10 +92,13 @@ struct word       // стр для хранения слов с переводо
 	char tempchar; // отладка временно для выравн при просм  F3
 	int tempint;
 };
-struct inidat       // стр для хранения имён файлов и другой инфы
+struct inidat       // стр для хранения польз настроек имён файлов и др
 {				//будут и другие поля;
 	int idname;
 	char name[EN1];    //имя файла
+	char ininamenosortf[EN1];	//имя файла с несортрованн структ
+	char ininamesortf[EN1];		//имя файла с сортрованн структ
+
 					   //char namepath[EN1];	// c полным путём
 					   //int number;  // размер файла
 					   //char namehelp[EN1]; // пояснения к файлу

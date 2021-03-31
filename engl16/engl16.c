@@ -170,7 +170,7 @@ int main(int argc, const char ** argv, const char** env)
 					else printf("  Выделена дин пам din1name = %d Bytes \n под %d записей базы имён программы \n",
 						QUANTITYNAME * sizeof(struct inidat), QUANTITYNAME);
 				}
-				//запись  содержимое дин память pmeminidat в ф fini.dat (?надоли обн  = 0) ============
+				//запись  содержимого дин память pmeminidat в ф fini.dat (?надоли обн  = 0) ============
 				size_t result = fwrite(pmeminidat, sizeof(struct inidat), QUANTITYNAME, pFini);
 				puts("\n Создан Новый файл пользователя \"fini.dat\"\n\
  с новыми обнулёнными именами баз текстов \n");
@@ -268,14 +268,16 @@ int main(int argc, const char ** argv, const char** env)
 				writebase2(pnosortFile, pnamewordnosort, pmemword, countnumword);//
 							//pnosortFile - указ на откр внутр ф-ции hdd файл в котором сохранять базу слов 
 							//pnamewordnosort - уже сформированное ранее имя ф-ла для hdd ("argv[1]_nosort.dat")
-							// pmemword - указ на дин массив несорт структур, 
+							// pmemword - указ на дин массив НЕСОРТ структур, 
 							// countnumword - число несорт структур
 							//,?? возврат указ имя файла с  структурами ( ----- )????
 				puts(pnamewordnosort);		//debug вывод имени .hdd несортированных слов
 
-			//~~~~~~~~~~  запись в дин пам pFini   <- ИМЕНИ  XXX_nosort.dat    ~~~~~~~~~
+			//~~~~~~~~~~  занесение в ф ini "fini.dat" <- ИМЕНИ XXX_nosort.dat из дин памяти  ~~~~~~~~   	
+				
+				//~~~~~~~  сначала изменение в дин пам pFini <- ИМЕНИ  XXX_nosort.dat ~~~~~~~~~
 				{pmeminidat->idname = 0;
-				strncpy(pmeminidat->name, pnamewordnosort, EN1);
+				strncpy(pmeminidat->ininamenosortf, pnamewordnosort, EN1);
 				}
 
 			//~~~~~~~~~~  запись в ф ini "fini.dat" <- ИМЕНИ XXX_nosort.dat из дин памяти  ~~~~~~~~   	
@@ -288,7 +290,7 @@ int main(int argc, const char ** argv, const char** env)
 				}
 				fwrite(pmeminidat, sizeof(struct inidat), QUANTITYNAME, pFini);//fini.dat
 																			   
-			//~~~~~~~~~~ для сортировки массива преобразование имени XXX_sort.dat
+			//~~~~~~~~ перед сортировкой массива преобразование имени XXX_sort.dat
 				char *pnamesortword;  // указат на дин строка-имя  файла "argv[1]_sort.dat"
 				pnamesortword = rename2(argv[1], "_sort.dat", 4);  // д п выдел ф rename2()
 				puts(pnamesortword); 		//debug
@@ -296,15 +298,13 @@ int main(int argc, const char ** argv, const char** env)
 			//~~~~~~~~~~    начало алфавитной сортировки    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 
  				
 				pmemsortword = (struct word *) malloc((*pcountnumword) * sizeof(struct word));
-				// глоб указ = выделение д пам стрктур с отсортированными словами
+				//pmemsortword-глоб указ = выделение д пам стрктур под сортировку слов
 
-				//  под сепарацию и занесения строк в структуры 
-				//временно - начальное количество MAX_WORD 
 				if (pmemsortword == NULL)printf("Не выделенна память под pmemsortword \n");
 				else printf("  Выделенна память psort = %d Bytes \n  под %d сортированных структур \
   и поехали! сортировать\n",
 					(*pcountnumword) * sizeof(struct word), (*pcountnumword));
-//-----------   цикл переноса-копирования в новую дин память несортиров слов для сортировки 
+				//  цикл переноса-копир-я в дин память pmemsortword <-несортиров стр для сортировки 
 				int temp = 0;
 				for (temp = 0; temp < *pcountnumword; temp++)
 				{
@@ -326,7 +326,6 @@ int main(int argc, const char ** argv, const char** env)
 					//теперь palphabetword указ на алфавитно-отсортирт масс стуктур									
 					//по указ palphabetword находится  алфавитно сортирован массив с заполн полем repeat
 				}
-
 				//
 				//printf(" \ntemp  Далее in engl12.C  Отсорт-й мас- стр pret[0].id = %d\n", palphabetword[0].id);
 				printf("далее Сортировка idsort() структ частотно + алф сортированны\n");
@@ -341,14 +340,15 @@ int main(int argc, const char ** argv, const char** env)
 				}
 
 				//~~~~~~~~~~  запись в дин пам pmeminidat имени файла отсорт-ных структ word    ~~~~~~~~~
-				(pmeminidat + 1)->idname = 1;
-				strncpy((pmeminidat + 1)->name, pnamesortword, EN1);
-				(pmeminidat + 1)->inicountnumword = *pcountnumword; //коп в ini кол сортированных слов
+				//(pmeminidat + 1)->idname = 1;
+				strncpy((pmeminidat )->ininamesortf, pnamesortword, EN1);
+				(pmeminidat )->inicountnumword = *pcountnumword; //коп в ini кол сортированных слов
 				printf("!!!!!_____inicountnumword = _ %3d.  \n", pmeminidat->inicountnumword);
 
 				//~~~~~~~~~~   вывод с второй записью в hdd файл имён fini.dat   имени  XXX_sort.dat	---////////
  				fseek(pFini, 0, SEEK_SET);
 				fwrite(pmeminidat, sizeof(struct inidat), QUANTITYNAME, pFini);//fini.dat
+				
 
 			//	//~~~  temp????  ~~~~ открытие нового hdd файла для отсортированного масс структ слов
 			//			puts("\n будет создан новый файл пользователя \n с отсортированными словами \n");
@@ -418,7 +418,7 @@ int main(int argc, const char ** argv, const char** env)
 		};		// end else ... отказ от нового текста для сепарирования и выход---
 				// ... конец надо ли выбрать нов текст для сепарирования ----- 
 
-				////////////>>>>>>>>>>>>>>>>>>>   Движок   <<<<<<<</////////////////////////
+////////////>>>>>>>>>>>>>>>>>>>   Движок   <<<<<<<</////////////////////////
 		int go = 1;		//temp FLAG
 		if (go == 1)
 		{
