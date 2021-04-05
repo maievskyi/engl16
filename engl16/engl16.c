@@ -181,7 +181,7 @@ int main(int argc, const char ** argv, const char** env)
 
 			//// здесь все операции по сепарированию нового текста простой блок ================
 			{
-			// открытие входного .txt файла ==============================================
+				// открытие входного .txt файла ==============================================
 				err = fopen_s(&pFiletxt, argv[1], "rb");// инициализируется указатель FILE *pFiletxt 
 										//на вх-ой txt ф-л (argv[1])
 										//  и открывается в режиме (rb)-  "txt2.txt" 
@@ -259,12 +259,12 @@ int main(int argc, const char ** argv, const char** env)
 
 
 				//===~~~~~~~~  далее запись в файл базу WORD_nosort сепарированных но несортированных структур ===========				
-				
+
 				//---~~~~~~ для несортировнного массива преобразов имени XXX_nosort.dat вызовом ф-и rename2()
 				char *pnamewordnosort;  //указ д строки для преобраз.rename имя ф "argv[1]_nosort.dat"
 				{	pnamewordnosort = rename2(argv[1], "_nosort.dat", 4);
 				}
-			//~~~~~~~~~~~~ запись в WORD hdd файл(заранее переим) базу несортир структур ---///////////////  
+				//~~~~~~~~~~~~ запись в WORD hdd файл(заранее переим) базу несортир структур ---///////////////  
 				writebase2(pnosortFile, pnamewordnosort, pmemword, countnumword);//
 							//pnosortFile - указ на откр внутр ф-ции hdd файл в котором сохранять базу слов 
 							//pnamewordnosort - уже сформированное ранее имя ф-ла для hdd ("argv[1]_nosort.dat")
@@ -274,13 +274,13 @@ int main(int argc, const char ** argv, const char** env)
 				puts(pnamewordnosort);		//debug вывод имени .hdd несортированных слов
 
 			//~~~~~~~~~~  занесение в ф ini "fini.dat" <- ИМЕНИ XXX_nosort.dat из дин памяти  ~~~~~~~~   	
-				
+
 				//~~~~~~~  сначала изменение в дин пам pFini <- ИМЕНИ  XXX_nosort.dat ~~~~~~~~~
 				{pmeminidat->idname = 0;
 				strncpy(pmeminidat->ininamenosortf, pnamewordnosort, EN1);
 				}
 
-			//~~~~~~~~~~  запись в ф ini "fini.dat" <- ИМЕНИ XXX_nosort.dat из дин памяти  ~~~~~~~~   	
+				//~~~~~~~~~~  запись в ф ini "fini.dat" <- ИМЕНИ XXX_nosort.dat из дин памяти  ~~~~~~~~   	
 				err = fopen_s(&pFini, "fini.dat", "r+b");//XXX_nosrt.dat сохр в ф-л "fini.dat"
 				if (err)
 				{
@@ -289,14 +289,14 @@ int main(int argc, const char ** argv, const char** env)
 					exit(1);
 				}
 				fwrite(pmeminidat, sizeof(struct inidat), QUANTITYNAME, pFini);//fini.dat
-																			   
+
 			//~~~~~~~~ перед сортировкой массива преобразование имени XXX_sort.dat
 				char *pnamesortword;  // указат на дин строка-имя  файла "argv[1]_sort.dat"
 				pnamesortword = rename2(argv[1], "_sort.dat", 4);  // д п выдел ф rename2()
 				puts(pnamesortword); 		//debug
 
 			//~~~~~~~~~~    начало алфавитной сортировки    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 
- 				
+
 				pmemsortword = (struct word *) malloc((*pcountnumword) * sizeof(struct word));
 				//pmemsortword-глоб указ = выделение д пам стрктур под сортировку слов
 
@@ -318,9 +318,9 @@ int main(int argc, const char ** argv, const char** env)
 				{
 					//int disloc = 0;  //расположение поля в структуре word 
 					int disloc = &pmemword[0].id - &pmemword[0].id;
-					printf(" Первая алф сортировка без сокращений:/n ");
+					printf(" Первая алф сортировка без сокращений:\n ");
 					pmemsortword = alphabet4(pmemsortword, pcountnumword, measurealph, disloc);//сортировка
-					printf(" Сокращения после перввой алф сортировки :/n ");
+					printf(" Сокращения после перввой алф сортировки : \n ");
 					palphabetword = reduct3(pmemsortword, pcountnumword);
 					//сокращение повторений
 					//теперь palphabetword указ на алфавитно-отсортирт масс стуктур									
@@ -328,10 +328,25 @@ int main(int argc, const char ** argv, const char** env)
 				}
 				//
 				//printf(" \ntemp  Далее in engl12.C  Отсорт-й мас- стр pret[0].id = %d\n", palphabetword[0].id);
-				printf("далее Сортировка idsort() структ частотно + алф сортированны\n");
-				int disloc = 0;  // далее Сортировка по разным id стр word уже алфавтитно-отсорт массива
-				pmemsortword = idsort(palphabetword, pcountnumword, measurerepeatalph, disloc);//сортировка
+				printf("Желаете ли сортировать структ частотно - алфавитно ??? \n");
+				printf("\n\n  Press key \" y \" for Сортировки частотно + алф  \n");
+				//
+				//system("cls");
+				//printf("\n\n  Press key \" y \" for Сортировки частотно + алф  \n");
+				//int lett;
+				//lett = getch(stdin);
+				//int m = 0;
+				//while (lett == ' ')	//
+				//{
 
+				//}
+				//
+				if ('y'==getch(stdin))
+				{
+					int disloc = 0;  // далее Сортировка по разным id стр word уже алфавтитно-отсорт массива
+					palphabetword = idsort(palphabetword, pcountnumword, measurerepeatalph, disloc);//сортировка
+				//pmemsortword = idsort(palphabetword, pcountnumword, measurerepeatalph, disloc);//сортировка
+				}
 				printf("This \"Print\" inside to engl16.c - \n");
 				int m;
 				for (m = 0; m < *pcountnumword; m++)
@@ -343,7 +358,7 @@ int main(int argc, const char ** argv, const char** env)
 				//(pmeminidat + 1)->idname = 1;
 				strncpy((pmeminidat )->ininamesortf, pnamesortword, EN1);
 				(pmeminidat )->inicountnumword = *pcountnumword; //коп в ini кол сортированных слов
-				printf("!!!!!_____inicountnumword = _ %3d.  \n", pmeminidat->inicountnumword);
+				printf("!!!!! pmeminidat->inicountnumword = _ %3d.  \n", pmeminidat->inicountnumword);
 
 				//~~~~~~~~~~   вывод с второй записью в hdd файл имён fini.dat   имени  XXX_sort.dat	---////////
  				fseek(pFini, 0, SEEK_SET);
@@ -366,6 +381,8 @@ int main(int argc, const char ** argv, const char** env)
 			//pnamesortword-  уже сформированное ранее имя ф-ла для hdd
 			// palphabetword - указ на дин мас отсорт структур, pcountnumword - число отсорт структ
 			//, возврат указ имя файла с  структурами ( ----- )
+
+			printf("\n........Ваш текст состоит из %4d англиских слов.......\n", pmeminidat->inicountnumword);
 
 			} // конец всех операций по сепарированию и сортировке нового текста простой блок
 			  
@@ -406,13 +423,13 @@ int main(int argc, const char ** argv, const char** env)
 				free(pnewname0);		//
 			}
 #endif // RENAME
-		}	//... end  выбрть нов текст для сепарирования
+		}	//...if (1) end  выбрть нов текст для сепарирования
 
-			// отказ от нового текста для сепарирования и выход--------------------
+			// отказ от нов текста для сепар и вых (или раб по данным стар fini.dat) --------
 		else	// отказ от нового текста для сепарирования и выход
 		{
 			flagtext = OLDTEXT;;		// флаг - согласие что УЖЕ есть файл с сепар текстом
-			puts("Новый файл не будет обработан \n работа с предыдущей базой слов! \n");
+			puts("Новый файл не будет обработан \n продолжение работы по данным стар fini.dat ! \n");
 			system("pause");
 			exit(0);
 		};		// end else ... отказ от нового текста для сепарирования и выход---
@@ -429,16 +446,17 @@ int main(int argc, const char ** argv, const char** env)
 			int m = 0;
 			while (lett == ' ')	//
 			{
-
 				//printf("This \"Print\" inside GO \n");
-
 
 				system("cls");
 				printf("                 Press key \" \" for study or any key for exit \n");
-				printf("\n\n   %3d. id=%3d  repeat id = %3d _  (    %s     ) _ [ %d ]   \n"\
+				//printf("\n\n   %3d. id=%3d  repeat id = %3d _  (    %s     ) _ [ %d ]   \n"\
 				, m, pmemsortword[m].id, pmemsortword[m].repeat_id, pmemsortword[m].en, pmemsortword[m].repeat);
+				
+				//palphabetword[...] <- pmemsortword[m].id заменить !!!!!!!!!!!!!!!!!!
+				printf("\n\n   %3d. id=%3d  repeat id = %3d _  (    %s     ) _ [ %d ]   \n"\
+					, m, palphabetword[m].id, palphabetword[m].repeat_id, palphabetword[m].en, palphabetword[m].repeat);
 				m++;
-
 				lett = getch(stdin);
 
 				if ((lett == 'z') || (m == *pcountnumword)) //конец урока
