@@ -32,7 +32,7 @@ struct word *pmemword;		//-->глоб указат в main()на первичн�
 							//под МАССИВ СТРУКТУР (word) для отсепарирования token()
 							//далее память будет перерасширятся по этому указателю
 struct word *pmemsortword;  //--> указ на д пам стрктур с отсортированными словами
-struct word *palphabetword;  //--> указ на д пам стр-р с отсорт-ми и сокращенными словами
+struct word *pmemalphabetword;  //--> указ на д пам стр-р с отсорт-ми и сокращенными словами
 long amountmem = 0;		//---> РАЗМЕР в байтах дин пам выде-мых под структуры word
 long *pamountmem;		//--->укз РАЗМ в б-тах ДИН пам выде-мых под несорт структ word
 int countnumword = 0;	//---счётчик инкремента слов а значит и стр-р при сепар-и
@@ -321,13 +321,13 @@ int main(int argc, const char ** argv, const char** env)
 					printf(" Первая алф сортировка без сокращений:\n ");
 					pmemsortword = alphabet4(pmemsortword, pcountnumword, measurealph, disloc);//сортировка
 					printf(" Сокращения после перввой алф сортировки : \n ");
-					palphabetword = reduct3(pmemsortword, pcountnumword);
+					pmemalphabetword = reduct3(pmemsortword, pcountnumword);
 					//сокращение повторений
-					//теперь palphabetword указ на алфавитно-отсортирт масс стуктур									
-					//по указ palphabetword находится  алфавитно сортирован массив с заполн полем repeat
+					//теперь pmemalphabetword указ на алфавитно-отсортирт масс стуктур									
+					//по указ pmemalphabetword находится  алфавитно сортирован массив с заполн полем repeat
 				}
 				//
-				//printf(" \ntemp  Далее in engl12.C  Отсорт-й мас- стр pret[0].id = %d\n", palphabetword[0].id);
+				//printf(" \ntemp  Далее in engl12.C  Отсорт-й мас- стр pret[0].id = %d\n", pmemalphabetword[0].id);
 				printf("Желаете ли сортировать структ частотно - алфавитно ??? \n");
 				printf("\n\n  Press key \" y \" for Сортировки частотно + алф  \n");
 				//
@@ -344,8 +344,8 @@ int main(int argc, const char ** argv, const char** env)
 				if ('y'==getch(stdin))
 				{
 					int disloc = 0;  // далее Сортировка по разным id стр word уже алфавтитно-отсорт массива
-					palphabetword = idsort(palphabetword, pcountnumword, measurerepeatalph, disloc);//сортировка
-				//pmemsortword = idsort(palphabetword, pcountnumword, measurerepeatalph, disloc);//сортировка
+					pmemalphabetword = idsort(pmemalphabetword, pcountnumword, measurerepeatalph, disloc);//сортировка
+				//pmemsortword = idsort(pmemalphabetword, pcountnumword, measurerepeatalph, disloc);//сортировка
 				}
 				printf("This \"Print\" inside to engl16.c - \n");
 				int m;
@@ -376,10 +376,10 @@ int main(int argc, const char ** argv, const char** env)
 			//				exit(1);
 			//			}
 
-			//~~~~~~~~~~~~ запись в hdd файл(заранее переименов) базу отсортир структур  ---////////  
-			writebase2(psortFile, pnamesortword, palphabetword, countnumword);//  countnumword  ??????????????????:?
+			//~~~~~~~~~ запись в hdd файл(заранее переименов) word-базу отсортир структур  ---////////  
+			writebase2(psortFile, pnamesortword, pmemalphabetword, countnumword);//  countnumword  ??????????????????:?
 			//pnamesortword-  уже сформированное ранее имя ф-ла для hdd
-			// palphabetword - указ на дин мас отсорт структур, pcountnumword - число отсорт структ
+			// pmemalphabetword - указ на дин мас отсорт структур, pcountnumword - число отсорт структ
 			//, возврат указ имя файла с  структурами ( ----- )
 
 			printf("\n........Ваш текст состоит из %4d англиских слов.......\n", pmeminidat->inicountnumword);
@@ -453,10 +453,10 @@ int main(int argc, const char ** argv, const char** env)
 				//printf("\n\n   %3d. id=%3d  repeat id = %3d _  (    %s     ) _ [ %d ]   \n"\
 				, m, pmemsortword[m].id, pmemsortword[m].repeat_id, pmemsortword[m].en, pmemsortword[m].repeat);
 				
-				//palphabetword[...] <- pmemsortword[m].id заменить !!!!!!!!!!!!!!!!!!
+				//pmemalphabetword[...] <- pmemsortword[m].id заменить !!!!!!!!!!!!!!!!!!
 				printf("\n\n   %3d. id=%3d  repeat id = %3d _  (    %s     ) _ [ %d ]   \n"\
-					, m, palphabetword[m].id, palphabetword[m].repeat_id, palphabetword[m].en, palphabetword[m].repeat);
-				m++;
+					, m, pmemalphabetword[m].id, pmemalphabetword[m].repeat_id, pmemalphabetword[m].en, pmemalphabetword[m].repeat);
+				m++; 
 				lett = getch(stdin);
 
 				if ((lett == 'z') || (m == *pcountnumword)) //конец урока
