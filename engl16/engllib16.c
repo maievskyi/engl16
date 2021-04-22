@@ -207,12 +207,11 @@ char* writebase2(FILE *phddfile, char* pinidat, struct word *pmemword, int count
 
 	fwrite(pmemword, sizeof(struct word), countnumword, phddfile);  // запись в файл hddfile = "*pinidat"
 
-																	//fclose(pFiletxt);	// из которого читается список слов
-																	//fclose(pmyFile);		// файл в котором сохранять базу слов
+						   //fclose(pFtxt);	// из которого читается список слов
 	fclose(phddfile);		// закр файл в котором сохранять базу слов
 	printf("~~ Записан файл базы слов с пом-ю writebase2(): ( %s ) ~~\n", pinidat);  // temp
-																					   //...............................................................
-																					   //free(pnamewordnosort);	//осв-ие памяти с ИМЕНЕМ файла *_common.dat отсепарир-ных неотсортиров-х структ
+	//...............................................................
+	//free(pnamewordnosort);	//осв-ие памяти с ИМЕНЕМ файла *_common.dat отсепарир-ных неотсортиров-х структ
 	return(pinidat);
 }//    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%   END writebase2()   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
